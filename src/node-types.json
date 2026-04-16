@@ -1,0 +1,1981 @@
+[
+  {
+    "type": "arm_solver_spec",
+    "named": true,
+    "fields": {
+      "algorithm": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "solver_algorithm",
+            "named": true
+          }
+        ]
+      },
+      "cartesian_force": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "name_list",
+            "named": true
+          }
+        ]
+      },
+      "chain": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "world_lookup",
+            "named": true
+          }
+        ]
+      },
+      "gravity": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "world_lookup",
+            "named": true
+          }
+        ]
+      },
+      "joint_force": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "name_list",
+            "named": true
+          }
+        ]
+      },
+      "root": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "world_lookup",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "axis",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "base_solver_spec",
+    "named": true,
+    "fields": {
+      "force_solvers": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "force_solver_entry_list",
+            "named": true
+          }
+        ]
+      },
+      "velocity_solvers": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "velocity_solver_entry_list",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "bilateral_constraint",
+    "named": true,
+    "fields": {
+      "lower": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "context_lookup",
+            "named": true
+          }
+        ]
+      },
+      "upper": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "context_lookup",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "constraint_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "bilateral_constraint",
+          "named": true
+        },
+        {
+          "type": "equality_constraint",
+          "named": true
+        },
+        {
+          "type": "greater_than_constraint",
+          "named": true
+        },
+        {
+          "type": "less_than_constraint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint_handler_block",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "namespace": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint_handler_specification",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint_handler_specification",
+    "named": true,
+    "fields": {
+      "context": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "controller_context",
+            "named": true
+          }
+        ]
+      },
+      "controller": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "controller_entry",
+            "named": true
+          }
+        ]
+      },
+      "monitor": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "monitor_entry",
+            "named": true
+          }
+        ]
+      },
+      "motion": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "priority": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "priority_level",
+            "named": true
+          }
+        ]
+      },
+      "solver": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "solver_spec",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "constraint_specification",
+    "named": true,
+    "fields": {
+      "expr": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "constraint_expression",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "view": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "quantity_ref",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "context_decl",
+    "named": true,
+    "fields": {
+      "decl": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "units_declaration",
+            "named": true
+          },
+          {
+            "type": "value_declaration_list",
+            "named": true
+          },
+          {
+            "type": "world_declaration_list",
+            "named": true
+          }
+        ]
+      },
+      "label": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "context_lookup",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "post_lookup",
+          "named": true
+        },
+        {
+          "type": "pre_lookup",
+          "named": true
+        },
+        {
+          "type": "spec_lookup",
+          "named": true
+        },
+        {
+          "type": "world_lookup",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "controller_context",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ctrl_world_context_decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "controller_entry",
+    "named": true,
+    "fields": {
+      "feed_kind": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "controller_feed_kind",
+            "named": true
+          }
+        ]
+      },
+      "feed_scope": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "controller_feed_scope",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "output_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "controller_output_type",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "controller_type",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "controller_params",
+          "named": true
+        },
+        {
+          "type": "world_lookup",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "controller_feed_kind",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "controller_feed_scope",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "controller_output_type",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "controller_params",
+    "named": true,
+    "fields": {
+      "constraint": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "decay": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      },
+      "kd": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      },
+      "ki": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      },
+      "kp": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "ctrl_world_context_decl",
+    "named": true,
+    "fields": {
+      "decl": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ctrl_world_declaration_list",
+            "named": true
+          }
+        ]
+      },
+      "label": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "ctrl_world_declaration_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ctrl_world_quantity_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ctrl_world_quantity",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "props": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "world_quantity_props",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ctrl_world_quantity_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "ctrl_world_quantity_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ctrl_world_quantity",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ctrl_world_quantity_type",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "equality_constraint",
+    "named": true,
+    "fields": {
+      "reference": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "context_lookup",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "force_solver_entry",
+    "named": true,
+    "fields": {
+      "configuration": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "force": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "world_lookup",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "force_solver_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "force_solver_entry_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "force_solver_entry",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "geo_prop_key",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "geo_prop_pair",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "geo_prop_key",
+          "named": true
+        },
+        {
+          "type": "name",
+          "named": true
+        },
+        {
+          "type": "name_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "geometric_props",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "geo_prop_pair",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "gravitational_field_props",
+    "named": true,
+    "fields": {
+      "unit": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "unit",
+            "named": true
+          }
+        ]
+      },
+      "x": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      },
+      "y": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      },
+      "z": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "greater_than_constraint",
+    "named": true,
+    "fields": {
+      "threshold": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "context_lookup",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "guarded_motion_specification",
+    "named": true,
+    "fields": {
+      "context": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "motion_context",
+            "named": true
+          }
+        ]
+      },
+      "until": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "constraint_specification",
+            "named": true
+          }
+        ]
+      },
+      "when": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "constraint_specification",
+            "named": true
+          }
+        ]
+      },
+      "while": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "constraint_specification",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "import_decl",
+    "named": true,
+    "fields": {
+      "uri": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "less_than_constraint",
+    "named": true,
+    "fields": {
+      "threshold": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "context_lookup",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "monitor_entry",
+    "named": true,
+    "fields": {
+      "constraint": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "monitor_set_flag",
+          "named": true
+        },
+        {
+          "type": "monitor_trigger_event",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "monitor_set_flag",
+    "named": true,
+    "fields": {
+      "flag": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "monitor_trigger_event",
+    "named": true,
+    "fields": {
+      "event": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "motion_context",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "context_decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "motion_spec_block",
+    "named": true,
+    "fields": {
+      "move": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "namespace": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "guarded_motion_specification",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "name_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "namespace_decl",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "uri": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post_lookup",
+    "named": true,
+    "fields": {
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "pre_lookup",
+    "named": true,
+    "fields": {
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "priority_level",
+    "named": true,
+    "fields": {
+      "drivers": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name_list",
+            "named": true
+          }
+        ]
+      },
+      "level": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "integer",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "quantity",
+    "named": true,
+    "fields": {
+      "unit": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "unit",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "quantity_property",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "quantity_ref",
+    "named": true,
+    "fields": {
+      "axis": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "axis",
+            "named": true
+          }
+        ]
+      },
+      "property": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "quantity_property",
+            "named": true
+          }
+        ]
+      },
+      "quantity": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "scalar_quantity_type",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "solver_algorithm",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "solver_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "arm_solver_spec",
+          "named": true
+        },
+        {
+          "type": "base_solver_spec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "root": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "import_decl",
+          "named": true
+        },
+        {
+          "type": "namespace_decl",
+          "named": true
+        },
+        {
+          "type": "specification",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "spec_lookup",
+    "named": true,
+    "fields": {
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "specification",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint_handler_block",
+          "named": true
+        },
+        {
+          "type": "motion_spec_block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "unit",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "units_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "name_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "value_declaration_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "value_variable_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "value_variable",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "scalar_quantity_type",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "quantity",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "value_variable_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "value_variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "velocity_solver_entry",
+    "named": true,
+    "fields": {
+      "configuration": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "velocity_solver_type",
+            "named": true
+          }
+        ]
+      },
+      "velocity": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "world_lookup",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "velocity_solver_entry_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "velocity_solver_entry",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "world_declaration_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "world_quantity_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "world_lookup",
+    "named": true,
+    "fields": {
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "world_quantity",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "props": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "world_quantity_props",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "world_quantity_type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "world_quantity_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "world_quantity",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "world_quantity_props",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "geometric_props",
+          "named": true
+        },
+        {
+          "type": "gravitational_field_props",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "world_quantity_type",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": "Angle",
+    "named": false
+  },
+  {
+    "type": "AngularVelocity",
+    "named": false
+  },
+  {
+    "type": "CONSTRAINT_HANDLER",
+    "named": false
+  },
+  {
+    "type": "CONTEXT",
+    "named": false
+  },
+  {
+    "type": "CONTROLLERS",
+    "named": false
+  },
+  {
+    "type": "Force",
+    "named": false
+  },
+  {
+    "type": "Frame",
+    "named": false
+  },
+  {
+    "type": "Kd",
+    "named": false
+  },
+  {
+    "type": "Ki",
+    "named": false
+  },
+  {
+    "type": "KinematicChain",
+    "named": false
+  },
+  {
+    "type": "Kp",
+    "named": false
+  },
+  {
+    "type": "LinearDistance",
+    "named": false
+  },
+  {
+    "type": "LinearVelocity",
+    "named": false
+  },
+  {
+    "type": "MONITORS",
+    "named": false
+  },
+  {
+    "type": "MOTION",
+    "named": false
+  },
+  {
+    "type": "MOTION_SPEC",
+    "named": false
+  },
+  {
+    "type": "MOVE",
+    "named": false
+  },
+  {
+    "type": "N",
+    "named": false
+  },
+  {
+    "type": "NewtonEuler",
+    "named": false
+  },
+  {
+    "type": "Nm",
+    "named": false
+  },
+  {
+    "type": "PRIORITIES",
+    "named": false
+  },
+  {
+    "type": "Pose",
+    "named": false
+  },
+  {
+    "type": "Post",
+    "named": false
+  },
+  {
+    "type": "Pre",
+    "named": false
+  },
+  {
+    "type": "SOLVER",
+    "named": false
+  },
+  {
+    "type": "Spec",
+    "named": false
+  },
+  {
+    "type": "Torque",
+    "named": false
+  },
+  {
+    "type": "UNTIL",
+    "named": false
+  },
+  {
+    "type": "UniformGravitationalField",
+    "named": false
+  },
+  {
+    "type": "Units",
+    "named": false
+  },
+  {
+    "type": "VelocityTwist",
+    "named": false
+  },
+  {
+    "type": "Vereshchagin",
+    "named": false
+  },
+  {
+    "type": "WHEN",
+    "named": false
+  },
+  {
+    "type": "WHILE",
+    "named": false
+  },
+  {
+    "type": "World",
+    "named": false
+  },
+  {
+    "type": "Wrench",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "acceleration",
+    "named": false
+  },
+  {
+    "type": "active",
+    "named": false
+  },
+  {
+    "type": "algorithm",
+    "named": false
+  },
+  {
+    "type": "and",
+    "named": false
+  },
+  {
+    "type": "angular",
+    "named": false
+  },
+  {
+    "type": "apply",
+    "named": false
+  },
+  {
+    "type": "as-seen-by",
+    "named": false
+  },
+  {
+    "type": "at",
+    "named": false
+  },
+  {
+    "type": "base",
+    "named": false
+  },
+  {
+    "type": "between",
+    "named": false
+  },
+  {
+    "type": "cartesian",
+    "named": false
+  },
+  {
+    "type": "cartesian-force",
+    "named": false
+  },
+  {
+    "type": "chain",
+    "named": false
+  },
+  {
+    "type": "cm",
+    "named": false
+  },
+  {
+    "type": "cm/s",
+    "named": false
+  },
+  {
+    "type": "comment",
+    "named": true,
+    "extra": true
+  },
+  {
+    "type": "configuration",
+    "named": false
+  },
+  {
+    "type": "constraint",
+    "named": false
+  },
+  {
+    "type": "controller_type",
+    "named": true
+  },
+  {
+    "type": "decay",
+    "named": false
+  },
+  {
+    "type": "deg",
+    "named": false
+  },
+  {
+    "type": "deg/s",
+    "named": false
+  },
+  {
+    "type": "distance",
+    "named": false
+  },
+  {
+    "type": "drivers",
+    "named": false
+  },
+  {
+    "type": "equal",
+    "named": false
+  },
+  {
+    "type": "event",
+    "named": false
+  },
+  {
+    "type": "feed",
+    "named": false
+  },
+  {
+    "type": "flag",
+    "named": false
+  },
+  {
+    "type": "force",
+    "named": false
+  },
+  {
+    "type": "force-distribution",
+    "named": false
+  },
+  {
+    "type": "force_solver_type",
+    "named": true
+  },
+  {
+    "type": "gravity",
+    "named": false
+  },
+  {
+    "type": "greater",
+    "named": false
+  },
+  {
+    "type": "identifier",
+    "named": true
+  },
+  {
+    "type": "import",
+    "named": false
+  },
+  {
+    "type": "integer",
+    "named": true
+  },
+  {
+    "type": "is",
+    "named": false
+  },
+  {
+    "type": "joint-force",
+    "named": false
+  },
+  {
+    "type": "keeping",
+    "named": false
+  },
+  {
+    "type": "larger",
+    "named": false
+  },
+  {
+    "type": "less",
+    "named": false
+  },
+  {
+    "type": "level",
+    "named": false
+  },
+  {
+    "type": "linear",
+    "named": false
+  },
+  {
+    "type": "m",
+    "named": false
+  },
+  {
+    "type": "m/s",
+    "named": false
+  },
+  {
+    "type": "m/s2",
+    "named": false
+  },
+  {
+    "type": "monitor",
+    "named": false
+  },
+  {
+    "type": "name",
+    "named": true
+  },
+  {
+    "type": "ns",
+    "named": false
+  },
+  {
+    "type": "number",
+    "named": true
+  },
+  {
+    "type": "of",
+    "named": false
+  },
+  {
+    "type": "outputs",
+    "named": false
+  },
+  {
+    "type": "rad",
+    "named": false
+  },
+  {
+    "type": "rad/s",
+    "named": false
+  },
+  {
+    "type": "ref-point",
+    "named": false
+  },
+  {
+    "type": "root",
+    "named": false
+  },
+  {
+    "type": "rotation",
+    "named": false
+  },
+  {
+    "type": "set",
+    "named": false
+  },
+  {
+    "type": "smaller",
+    "named": false
+  },
+  {
+    "type": "string",
+    "named": true
+  },
+  {
+    "type": "than",
+    "named": false
+  },
+  {
+    "type": "to",
+    "named": false
+  },
+  {
+    "type": "torque",
+    "named": false
+  },
+  {
+    "type": "trigger",
+    "named": false
+  },
+  {
+    "type": "velocity",
+    "named": false
+  },
+  {
+    "type": "velocity-composition",
+    "named": false
+  },
+  {
+    "type": "velocity_solver_type",
+    "named": true
+  },
+  {
+    "type": "when",
+    "named": false
+  },
+  {
+    "type": "while",
+    "named": false
+  },
+  {
+    "type": "wrt",
+    "named": false
+  },
+  {
+    "type": "x",
+    "named": false
+  },
+  {
+    "type": "y",
+    "named": false
+  },
+  {
+    "type": "z",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
+  }
+]

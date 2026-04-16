@@ -1,0 +1,21 @@
+{
+  "name": "tree-sitter-motion-spec",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for the motion-spec-dsl TextX DSL",
+  "main": "bindings/node",
+  "scripts": {
+    "build": "tree-sitter generate",
+    "test": "tree-sitter test"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.rob_mot",
+      "file-types": ["rob_mot"],
+      "highlights": "queries/motion_spec/highlights.scm"
+    }
+  ],
+  "devDependencies": {
+    "tree-sitter-cli": "^0.25.0"
+  },
+  "license": "MIT"
+}
