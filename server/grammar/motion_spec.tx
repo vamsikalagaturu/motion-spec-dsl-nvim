@@ -82,7 +82,7 @@ GeometricProps:
 ;
 
 GeoPropPair:
-    key=GeoPropKey "=" value=Name
+    key=GeoPropKey ":" value=Name
 ;
 
 GeoPropKey:
@@ -199,9 +199,9 @@ ControllerEntry:
 ControllerParams:
     "constraint" ":" constraint=ConstraintRef ","
     "solver" ":" solver=Name ","
-    "Kp" ":" kp=FLOAT ","
-    "Ki" ":" ki=FLOAT ","
-    "Kd" ":" kd=FLOAT
+    "Kp" "=" kp=FLOAT ","
+    "Ki" "=" ki=FLOAT ","
+    "Kd" "=" kd=FLOAT
     ("," "decay" ":" decay=FLOAT)?
 ;
 

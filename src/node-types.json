@@ -1074,6 +1074,21 @@
     }
   },
   {
+    "type": "scoped_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "solver_entry",
     "named": true,
     "fields": {
@@ -1750,10 +1765,6 @@
   {
     "type": "root",
     "named": false
-  },
-  {
-    "type": "scoped_name",
-    "named": true
   },
   {
     "type": "set",

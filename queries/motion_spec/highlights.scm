@@ -72,8 +72,13 @@
 (number) @number
 (unit) @string.special
 
-; Structural captures.  Types, algorithms, controllers, robots, and quantities
-; are highlighted from their grammar role, not from hard-coded name lists.
+; Geo prop keys (of, wrt, ref-point, as-seen-by).
+(property_key) @property
+
+; Each name component inside a scoped_name (e.g. c2.frc-ref → c2 and frc-ref).
+(scoped_name (name) @variable)
+
+; Structural captures.  Types come from grammar role, not hard-coded name lists.
 (namespace_decl name: (name) @module)
 (import_decl uri: (string) @string.special)
 (robot_spec namespace: (name) @module name: (name) @type)
@@ -81,12 +86,12 @@
 (constraint_handler namespace: (name) @module name: (name) @function)
 
 (robot_spec type: (name) @type)
-(robot_chain_component root: (name) @variable.member end: (name) @variable.member)
-(robot_base_component root: (name) @variable.member)
+(robot_chain_component root: (name) @variable end: (name) @variable)
+(robot_base_component root: (name) @variable)
 (robot_manipulator_component
-  name: (name) @variable.member
-  root: (name) @variable.member
-  end: (name) @variable.member)
+  name: (name) @variable
+  root: (name) @variable
+  end: (name) @variable)
 
 (world_context_decl label: (name) @variable)
 (pre_context_decl label: (name) @variable)
@@ -95,15 +100,14 @@
 
 (world_quantity name: (name) @variable type: (name) @type)
 (value_variable name: (name) @variable type: (name) @type)
-(geo_prop_pair key: (property_key) @property value: (name) @variable.member)
+(geo_prop_pair value: (name) @variable)
 
 (constraint_specification name: (name) @variable)
-(context_quantity_ref context: (name) @variable quantity: (name) @variable.member)
+(context_quantity_ref context: (name) @variable quantity: (name) @variable)
 (view subspace: (subspace) @property)
-(view axis: (axis) @property)
-(context_ref variable: (scoped_name) @variable.member)
+(view axis: (axis) @constant.builtin)
 
-(monitor_entry name: (name) @variable constraint: (constraint_ref) @variable.member)
+(monitor_entry name: (name) @variable constraint: (constraint_ref) @variable)
 (monitor_trigger_event event: (name) @constant)
 (monitor_set_flag flag: (name) @constant)
 
@@ -111,23 +115,20 @@
   name: (name) @variable
   type: (name) @type)
 (controller_entry command_type: (name) @type)
-(controller_entry apply_at: (scoped_name) @variable.member)
 (controller_params
-  constraint: (constraint_ref) @variable.member
-  solver: (name) @variable.member)
+  constraint: (constraint_ref) @variable
+  solver: (name) @variable)
 
 (solver_entry
   name: (name) @variable
-  robot: (_) @variable.member
-  algorithm: (name) @type
-  root: (_) @variable.member
-  gravity: (scoped_name) @variable.member
-  gravity_value: (context_ref) @variable.member)
-(solver_entry end: (_) @variable.member)
+  algorithm: (name) @type)
+(solver_entry robot: (_) @variable)
+(solver_entry root: (_) @variable)
+(solver_entry end: (_) @variable)
 
-(robot_component_ref robot: (name) @type component: (name) @variable.member)
+(robot_component_ref robot: (name) @type component: (name) @variable)
 (robot_chain_anchor_ref robot: (name) @type anchor: (robot_anchor) @property)
-(robot_component_anchor_ref component: (robot_component_ref) @variable.member anchor: (robot_anchor) @property)
+(robot_component_anchor_ref component: (robot_component_ref) @variable anchor: (robot_anchor) @property)
 
 ((name) @constant
  (#match? @constant "^[A-Z][A-Z0-9_]*$"))

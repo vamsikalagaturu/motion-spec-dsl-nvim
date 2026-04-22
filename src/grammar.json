@@ -921,7 +921,7 @@
         },
         {
           "type": "STRING",
-          "value": "="
+          "value": ":"
         },
         {
           "type": "FIELD",
@@ -2165,7 +2165,7 @@
         },
         {
           "type": "STRING",
-          "value": ":"
+          "value": "="
         },
         {
           "type": "FIELD",
@@ -2185,7 +2185,7 @@
         },
         {
           "type": "STRING",
-          "value": ":"
+          "value": "="
         },
         {
           "type": "FIELD",
@@ -2205,7 +2205,7 @@
         },
         {
           "type": "STRING",
-          "value": ":"
+          "value": "="
         },
         {
           "type": "FIELD",
@@ -2552,15 +2552,29 @@
       ]
     },
     "scoped_name": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": -1,
-        "content": {
-          "type": "PATTERN",
-          "value": "[A-Za-z_][A-Za-z0-9_-]*(?:\\.[A-Za-z_][A-Za-z0-9_-]*)*"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "name"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "."
+              },
+              {
+                "type": "SYMBOL",
+                "name": "name"
+              }
+            ]
+          }
         }
-      }
+      ]
     },
     "name": {
       "type": "TOKEN",

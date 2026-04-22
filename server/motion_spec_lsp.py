@@ -183,7 +183,7 @@ _COMPLETIONS: list[types.CompletionItem] = [
         "        ${6:ctrl-name}: PID {\n"
         "            constraint: ${7:motion_name.cstr-name},\n"
         "            solver: ${8:solver_name},\n"
-        "            Kp: ${9:5.0}, Ki: ${10:1.0}, Kd: ${11:3.0}\n"
+        "            Kp = ${9:5.0}, Ki = ${10:1.0}, Kd = ${11:3.0}\n"
         "        }\n"
         "    }\n\n"
         "    SOLVERS {\n"
@@ -213,7 +213,7 @@ _COMPLETIONS: list[types.CompletionItem] = [
         "${1:ctrl-name}: PID {\n"
         "    constraint: ${2:motion.cstr-name},\n"
         "    solver: ${3:solver_name},\n"
-        "    Kp: ${4:5.0}, Ki: ${5:1.0}, Kd: ${6:3.0}\n"
+        "    Kp = ${4:5.0}, Ki = ${5:1.0}, Kd = ${6:3.0}\n"
         "}",
         "PID controller",
     ),
@@ -305,7 +305,7 @@ _HOVER_DOCS: dict[str, str] = {
     "Pre": "**Pre** `{ ... }`\n\nDeclares precondition values.",
     "Spec": "**Spec** `{ ... }`\n\nDeclares motion specification values.",
     "Post": "**Post** `{ ... }`\n\nDeclares postcondition values.",
-    "PID": "**PID** `{ constraint: <motion.constraint>, solver: <solver>, Kp: <n>, Ki: <n>, Kd: <n> [, decay: <n>] }`\n\nPID controller configuration.",
+    "PID": "**PID** `{ constraint: <motion.constraint>, solver: <solver>, Kp = <n>, Ki = <n>, Kd = <n> [, decay: <n>] }`\n\nPID controller configuration.",
     "Solver": "**Solver** `{ robot: <robot-or-component>, algorithm: <name>, root: <anchor>, ... }`\n\nNamed solver entry inside `SOLVERS`.",
     "Vereshchagin": "**Vereshchagin**\n\nSupported solver algorithm.",
     "NewtonEuler": "**NewtonEuler**\n\nSupported solver algorithm.",

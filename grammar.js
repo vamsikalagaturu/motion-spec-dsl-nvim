@@ -125,7 +125,7 @@ module.exports = grammar({
 
     geometric_props: ($) => commaSep1($.geo_prop_pair),
 
-    geo_prop_pair: ($) => seq(field("key", $.property_key), "=", field("value", $.name)),
+    geo_prop_pair: ($) => seq(field("key", $.property_key), ":", field("value", $.name)),
 
     property_key: (_) => choice("of", "wrt", "ref-point", "as-seen-by"),
 
@@ -281,15 +281,15 @@ module.exports = grammar({
         field("solver", $.name),
         ",",
         "Kp",
-        ":",
+        "=",
         field("kp", $.number),
         ",",
         "Ki",
-        ":",
+        "=",
         field("ki", $.number),
         ",",
         "Kd",
-        ":",
+        "=",
         field("kd", $.number),
         optional(seq(",", "decay", ":", field("decay", $.number)))
       ),
@@ -338,7 +338,7 @@ module.exports = grammar({
 
     robot_anchor: (_) => choice("root", "end"),
 
-    scoped_name: (_) => token(prec(-1, /[A-Za-z_][A-Za-z0-9_-]*(?:\.[A-Za-z_][A-Za-z0-9_-]*)*/)),
+    scoped_name: ($) => seq($.name, repeat(seq(".", $.name))),
 
     name: (_) => token(prec(-1, /[A-Za-z_][A-Za-z0-9_-]*/)),
     string: (_) => /"[^"\\]*(\\.[^"\\]*)*"/,
