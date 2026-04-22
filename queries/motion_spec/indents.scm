@@ -1,8 +1,11 @@
-(motion_spec_block) @indent
-(constraint_handler_block) @indent
-(context_decl) @indent
-(constraint_specification) @indent
+(robot_spec) @indent
+(motion_spec) @indent
+(constraint_handler) @indent
+(motion_context) @indent
+(handler_context) @indent
+(world_declaration_list) @indent
+(value_declaration_list) @indent
+(constraint_section) @indent
 (monitor_entry) @indent
 (controller_entry) @indent
-(priority_level) @indent
-(solver_spec) @indent
+(solver_entry) @indent

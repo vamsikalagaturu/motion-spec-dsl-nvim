@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Language server for the motion-spec-dsl TextX DSL (.rob_mot files)."""
+"""Language server for the motion-spec-dsl TextX DSL (.robmot files)."""
 
 import logging
 import re
@@ -146,42 +146,55 @@ def _snippet(label: str, body: str, detail: str) -> types.CompletionItem:
 _COMPLETIONS: list[types.CompletionItem] = [
     _snippet(
         "import",
-        'import "${1:common.rob_mot}"',
-        "import another .rob_mot file",
+        'import "${1:common.robmot}"',
+        "import another .robmot file",
     ),
     _snippet(
         "MOTION_SPEC block",
         'MOTION_SPEC (ns=${1:app}) ${2:motion_name} {\n'
         '    MOVE: "${3:Describe motion}"\n\n'
-        "    CONTEXT:\n"
+        "    CONTEXT {\n"
         "        c1: World {\n"
         "            ${4:quantity}: ${5:Pose}\n"
         "        }\n\n"
-        "    WHEN:\n\n"
-        "    WHILE:\n"
-        "        ${6:cstr-name}: keeping ${7:quantity.property.axis} equal to Spec[${8:reference}]\n\n"
-        "    UNTIL:\n"
+        "    }\n\n"
+        "    WHEN {}\n\n"
+        "    WHILE {\n"
+        "        ${6:cstr-name}: keeping ${7:c1.quantity.linvel.z} equal to ${8:c2.reference}\n"
+        "    }\n\n"
+        "    UNTIL {}\n"
         "}",
         "guarded motion specification",
     ),
     _snippet(
         "CONSTRAINT_HANDLER block",
         "CONSTRAINT_HANDLER (ns=${1:app}) ${2:handler_name} {\n"
-        "    CONTEXT:\n"
+        "    CONTEXT {\n"
         "        c1: World {\n"
-        "            ${3:chain-arm}: KinematicChain\n"
+        "            ${3:gravity}: Gravity\n"
+        "        },\n"
+        "        c2: Spec {\n"
+        "            ${4:gravity-vec}: Vector { x = 0.0, y = 0.0, z = -9.81 m/s2 }\n"
         "        }\n\n"
-        "    MOTION: ${4:motion_name}\n\n"
-        "    MONITORS:\n\n"
-        "    CONTROLLERS:\n"
-        "        ${5:ctrl-name}: PID { constraint: ${6:cstr-name}, Kp: ${7:5.0}, Ki: ${8:1.0}, Kd: ${9:3.0} }\n\n"
-        "    PRIORITIES:\n"
-        "        ${10:prio-name}: level = ${11:1} { drivers: [ ${12:spec-acc-ee} ] }\n\n"
-        "    SOLVER:\n"
-        "        algorithm: ${13:Vereshchagin},\n"
-        "        chain: World[${14:chain-arm}],\n"
-        "        root: World[${15:frame-base}],\n"
-        "        gravity: World[${16:gravity}]\n"
+        "    }\n\n"
+        "    MOTION: ${5:motion_name}\n\n"
+        "    MONITORS {}\n\n"
+        "    CONTROLLERS {\n"
+        "        ${6:ctrl-name}: PID {\n"
+        "            constraint: ${7:motion_name.cstr-name},\n"
+        "            solver: ${8:solver_name},\n"
+        "            Kp: ${9:5.0}, Ki: ${10:1.0}, Kd: ${11:3.0}\n"
+        "        }\n"
+        "    }\n\n"
+        "    SOLVERS {\n"
+        "        ${8:solver_name}: Solver {\n"
+        "            robot: ${12:robot},\n"
+        "            algorithm: ${13:Vereshchagin},\n"
+        "            root: ${12:robot}.chain.root,\n"
+        "            end: ${12:robot}.chain.end,\n"
+        "            gravity: c1.${3:gravity} equal to c2.${4:gravity-vec}\n"
+        "        }\n"
+        "    }\n"
         "}",
         "constraint handler",
     ),
@@ -197,26 +210,43 @@ _COMPLETIONS: list[types.CompletionItem] = [
     ),
     _snippet(
         "PID controller",
-        "${1:ctrl-name}: PID { constraint: ${2:cstr-name}, Kp: ${3:5.0}, Ki: ${4:1.0}, Kd: ${5:3.0} }",
+        "${1:ctrl-name}: PID {\n"
+        "    constraint: ${2:motion.cstr-name},\n"
+        "    solver: ${3:solver_name},\n"
+        "    Kp: ${4:5.0}, Ki: ${5:1.0}, Kd: ${6:3.0}\n"
+        "}",
         "PID controller",
     ),
     _snippet(
-        "controller routing",
-        "outputs ${1|force,acceleration,velocity|} apply at World[${2:target}] feed to ${3|cartesian,base|} ${4|force,acceleration,velocity|}",
-        "controller output routing",
+        "controller command",
+        "as ${1|Force,Torque,LinearVelocity,AngularVelocity|} apply at ${2:c1.link-ee}",
+        "optional controller command type and application target",
     ),
     _snippet(
-        "VelocityCompositionSolver",
-        "${1:base-fvk}: VelocityCompositionSolver { configuration: ${2:config}, velocity: World[${3:twist}] }",
-        "base velocity solver",
+        "ROBOT manipulator",
+        "ROBOT (ns=${1:app}) ${2:kinova} {\n"
+        "    type: Manipulator,\n"
+        "    urdf: \"${3:../robots/kg3.urdf}\",\n"
+        "    chain: {\n"
+        "        root: ${4:link-base},\n"
+        "        end: ${5:link-ee}\n"
+        "    }\n"
+        "}",
+        "standalone manipulator robot",
     ),
     _snippet(
-        "ForceDistributionSolver",
-        "${1:base-ifk}: ForceDistributionSolver { configuration: ${2:config}, force: World[${3:wrench}] }",
-        "base force solver",
+        "Solver",
+        "${1:solver_name}: Solver {\n"
+        "    robot: ${2:robot},\n"
+        "    algorithm: ${3|Vereshchagin,NewtonEuler,VelocityDistribution,ForceDistribution|},\n"
+        "    root: ${2:robot}.chain.root,\n"
+        "    end: ${2:robot}.chain.end,\n"
+        "    gravity: ${4:c1.gravity} equal to ${5:c2.gravity-vec}\n"
+        "}",
+        "solver entry",
     ),
     _keyword("ns", 'ns app = "..."'),
-    _keyword("import", 'import "common.rob_mot"'),
+    _keyword("import", 'import "common.robmot"'),
     _keyword("MOTION_SPEC"),
     _keyword("CONSTRAINT_HANDLER"),
     _keyword("CONTEXT"),
@@ -227,8 +257,8 @@ _COMPLETIONS: list[types.CompletionItem] = [
     _keyword("MOTION"),
     _keyword("MONITORS"),
     _keyword("CONTROLLERS"),
-    _keyword("PRIORITIES"),
-    _keyword("SOLVER"),
+    _keyword("ROBOT"),
+    _keyword("SOLVERS"),
     _keyword("World"),
     _keyword("Pre"),
     _keyword("Spec"),
@@ -241,53 +271,46 @@ _COMPLETIONS: list[types.CompletionItem] = [
     _keyword("Pose"),
     _keyword("KinematicChain"),
     _keyword("Frame"),
-    _keyword("UniformGravitationalField"),
-    _keyword("VelocityCompositionSolver"),
-    _keyword("ForceDistributionSolver"),
-    _keyword("outputs force"),
-    _keyword("outputs acceleration"),
-    _keyword("outputs velocity"),
-    _keyword("apply at World[]"),
-    _keyword("feed to cartesian force"),
-    _keyword("feed to cartesian acceleration"),
-    _keyword("feed to base force"),
-    _keyword("feed to base velocity"),
+    _keyword("Link"),
+    _keyword("Gravity"),
+    _keyword("Vector"),
+    _keyword("VelocityDistribution"),
+    _keyword("ForceDistribution"),
+    _keyword("as Force"),
+    _keyword("apply at c1.link-ee"),
     *[_unit(unit) for unit in ["rad/s", "m/s2", "m/s", "cm/s", "deg/s", "Nm", "rad", "deg", "cm", "m", "N"]],
 ]
 
 
 _HOVER_DOCS: dict[str, str] = {
-    "import": '**import** `"<file.rob_mot>"`\n\nLoads another `.rob_mot` file for cross-reference resolution and generation.',
+    "import": '**import** `"<file.robmot>"`\n\nLoads another `.robmot` file for cross-reference resolution and generation.',
     "MOTION_SPEC": "**MOTION_SPEC** `(ns=<namespace>) <name> { ... }`\n\nDeclares a guarded motion specification.",
     "CONSTRAINT_HANDLER": "**CONSTRAINT_HANDLER** `(ns=<namespace>) <name> { ... }`\n\nDeclares the control-side handler for a motion specification.",
+    "ROBOT": "**ROBOT** `(ns=<namespace>) <name> { ... }`\n\nDeclares robot metadata and kinematic structure used by solver entries.",
     "MOVE": '**MOVE** `: "<text>"`\n\nHuman-readable description of the motion.',
-    "CONTEXT": "**CONTEXT** `:`\n\nIntroduces named units, world entities, and scalar values used by the spec.",
-    "WHEN": "**WHEN** `:`\n\nLists activation constraints for the motion.",
-    "WHILE": "**WHILE** `:`\n\nLists constraints that must be maintained during execution.",
-    "UNTIL": "**UNTIL** `:`\n\nLists termination conditions for the motion.",
+    "CONTEXT": "**CONTEXT** `{ ... }`\n\nIntroduces named world entities and scalar values used by the spec.",
+    "WHEN": "**WHEN** `{ ... }`\n\nLists activation constraints for the motion.",
+    "WHILE": "**WHILE** `{ ... }`\n\nLists constraints that must be maintained during execution.",
+    "UNTIL": "**UNTIL** `{ ... }`\n\nLists termination conditions for the motion.",
     "MOTION": "**MOTION** `: <name>`\n\nBinds a constraint handler to a named motion spec.",
-    "MONITORS": "**MONITORS** `:`\n\nDefines monitor instances for constraints.",
-    "CONTROLLERS": "**CONTROLLERS** `:`\n\nDefines controller instances such as PID controllers.",
-    "PRIORITIES": "**PRIORITIES** `:`\n\nDefines priority levels and their drivers.",
-    "SOLVER": "**SOLVER** `:`\n\nConfigures the solver algorithm and its inputs/outputs.",
-    "monitor": "**monitor** `<constraint>` `and ...`\n\nDeclares a monitor action for a constraint using the newer textual syntax.",
+    "MONITORS": "**MONITORS** `{ ... }`\n\nDefines monitor instances for constraints.",
+    "CONTROLLERS": "**CONTROLLERS** `{ ... }`\n\nDefines controller instances such as PID controllers.",
+    "SOLVERS": "**SOLVERS** `{ ... }`\n\nDefines one or more named solver entries available to controllers in the handler.",
+    "monitor": "**monitor** `<motion.constraint>` `and ...`\n\nDeclares a monitor action for a constraint.",
     "trigger": "**trigger event** `<event>` `when active`\n\nEmits an event while the monitored constraint is active.",
     "flag": "**set flag** `<flag>` `while active`\n\nSets a flag while the monitored constraint is active.",
-    "outputs": "**outputs** `<force|acceleration|velocity>`\n\nDeclares what a controller produces.",
-    "apply": "**apply at** `World[<name>]`\n\nApplies controller output at a world quantity.",
-    "feed": "**feed to** `<cartesian|base>` `<force|acceleration|velocity>`\n\nRoutes controller output into a solver feed.",
-    "velocity-composition": "**velocity-composition** `{ ... }`\n\nDefines base velocity composition solvers.",
-    "force-distribution": "**force-distribution** `{ ... }`\n\nDefines base force distribution solvers.",
-    "Units": "**Units** `{ ... }`\n\nDeclares available unit vocabularies.",
-    "World": "**World** `{ ... }` or `World[name]`\n\nDeclares or references world quantities and frames.",
-    "Pre": "**Pre** `{ ... }` or `Pre[name]`\n\nDeclares or references precondition values.",
-    "Spec": "**Spec** `{ ... }` or `Spec[name]`\n\nDeclares or references motion specification values.",
-    "Post": "**Post** `{ ... }` or `Post[name]`\n\nDeclares or references postcondition values.",
-    "PID": "**PID** `{ constraint: <name>, Kp: <n>, Ki: <n>, Kd: <n> [, decay: <n>] }`\n\nPID controller configuration.",
-    "VelocityCompositionSolver": "**VelocityCompositionSolver** `{ configuration: <name>, velocity: World[<name>] }`\n\nBase solver entry for velocity composition.",
-    "ForceDistributionSolver": "**ForceDistributionSolver** `{ configuration: <name>, force: World[<name>] }`\n\nBase solver entry for force distribution.",
+    "as": "**as** `<QuantityType>`\n\nOptionally casts a controller command, for example `as Force`.",
+    "apply": "**apply at** `<context.quantity>`\n\nOptionally applies controller output at a world quantity, usually a `Link`.",
+    "World": "**World** `{ ... }`\n\nDeclares world quantities and frames.",
+    "Pre": "**Pre** `{ ... }`\n\nDeclares precondition values.",
+    "Spec": "**Spec** `{ ... }`\n\nDeclares motion specification values.",
+    "Post": "**Post** `{ ... }`\n\nDeclares postcondition values.",
+    "PID": "**PID** `{ constraint: <motion.constraint>, solver: <solver>, Kp: <n>, Ki: <n>, Kd: <n> [, decay: <n>] }`\n\nPID controller configuration.",
+    "Solver": "**Solver** `{ robot: <robot-or-component>, algorithm: <name>, root: <anchor>, ... }`\n\nNamed solver entry inside `SOLVERS`.",
     "Vereshchagin": "**Vereshchagin**\n\nSupported solver algorithm.",
     "NewtonEuler": "**NewtonEuler**\n\nSupported solver algorithm.",
+    "VelocityDistribution": "**VelocityDistribution**\n\nSupported solver algorithm.",
+    "ForceDistribution": "**ForceDistribution**\n\nSupported solver algorithm.",
     "ns": '**ns** `<name>` `= "<uri>"`\n\nNamespace declaration. Binds a short prefix to a URI.',
 }
 

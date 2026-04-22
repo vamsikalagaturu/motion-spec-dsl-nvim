@@ -17,7 +17,7 @@ M.config = {
 function M.setup(opts)
   M.config = vim.tbl_deep_extend("force", M.config, opts or {})
 
-  vim.filetype.add({ extension = { rob_mot = "rob_mot" } })
+  vim.filetype.add({ extension = { robmot = "rob_mot" } })
 
   if M.config.enable_treesitter then
     require("motion-spec-dsl-nvim.treesitter").setup()

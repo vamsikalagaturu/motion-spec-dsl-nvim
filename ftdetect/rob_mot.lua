@@ -1,3 +1,3 @@
 vim.filetype.add({
-  extension = { rob_mot = "rob_mot" },
+  extension = { robmot = "rob_mot" },
 })

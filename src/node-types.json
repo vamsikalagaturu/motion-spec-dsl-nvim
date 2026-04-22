@@ -1,100 +1,8 @@
 [
   {
-    "type": "arm_solver_spec",
-    "named": true,
-    "fields": {
-      "algorithm": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "solver_algorithm",
-            "named": true
-          }
-        ]
-      },
-      "cartesian_force": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "name_list",
-            "named": true
-          }
-        ]
-      },
-      "chain": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "world_lookup",
-            "named": true
-          }
-        ]
-      },
-      "gravity": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "world_lookup",
-            "named": true
-          }
-        ]
-      },
-      "joint_force": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "name_list",
-            "named": true
-          }
-        ]
-      },
-      "root": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "world_lookup",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "axis",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "base_solver_spec",
-    "named": true,
-    "fields": {
-      "force_solvers": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "force_solver_entry_list",
-            "named": true
-          }
-        ]
-      },
-      "velocity_solvers": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "velocity_solver_entry_list",
-            "named": true
-          }
-        ]
-      }
-    }
   },
   {
     "type": "bilateral_constraint",
@@ -105,7 +13,7 @@
         "required": true,
         "types": [
           {
-            "type": "context_lookup",
+            "type": "context_ref",
             "named": true
           }
         ]
@@ -115,7 +23,7 @@
         "required": true,
         "types": [
           {
-            "type": "context_lookup",
+            "type": "context_ref",
             "named": true
           }
         ]
@@ -150,9 +58,29 @@
     }
   },
   {
-    "type": "constraint_handler_block",
+    "type": "constraint_handler",
     "named": true,
     "fields": {
+      "context": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "handler_context",
+            "named": true
+          }
+        ]
+      },
+      "motion": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -168,60 +96,38 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "name",
             "named": true
           }
         ]
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "constraint_handler_specification",
+          "type": "controller_entry",
+          "named": true
+        },
+        {
+          "type": "monitor_entry",
+          "named": true
+        },
+        {
+          "type": "solver_entry",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "constraint_handler_specification",
+    "type": "constraint_ref",
     "named": true,
     "fields": {
-      "context": {
+      "constraint": {
         "multiple": false,
         "required": true,
-        "types": [
-          {
-            "type": "controller_context",
-            "named": true
-          }
-        ]
-      },
-      "controller": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "controller_entry",
-            "named": true
-          }
-        ]
-      },
-      "monitor": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "monitor_entry",
-            "named": true
-          }
-        ]
-      },
-      "motion": {
-        "multiple": false,
-        "required": false,
         "types": [
           {
             "type": "name",
@@ -229,26 +135,31 @@
           }
         ]
       },
-      "priority": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "priority_level",
-            "named": true
-          }
-        ]
-      },
-      "solver": {
+      "motion": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
-            "type": "solver_spec",
+            "type": "name",
             "named": true
           }
         ]
       }
+    }
+  },
+  {
+    "type": "constraint_section",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "constraint_specification",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -280,7 +191,7 @@
         "required": true,
         "types": [
           {
-            "type": "quantity_ref",
+            "type": "view",
             "named": true
           }
         ]
@@ -288,33 +199,25 @@
     }
   },
   {
-    "type": "context_decl",
+    "type": "context_quantity_ref",
     "named": true,
     "fields": {
-      "decl": {
+      "context": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "units_declaration",
-            "named": true
-          },
-          {
-            "type": "value_declaration_list",
-            "named": true
-          },
-          {
-            "type": "world_declaration_list",
+            "type": "name",
             "named": true
           }
         ]
       },
-      "label": {
+      "quantity": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "name",
             "named": true
           }
         ]
@@ -322,67 +225,51 @@
     }
   },
   {
-    "type": "context_lookup",
+    "type": "context_ref",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "post_lookup",
-          "named": true
-        },
-        {
-          "type": "pre_lookup",
-          "named": true
-        },
-        {
-          "type": "spec_lookup",
-          "named": true
-        },
-        {
-          "type": "world_lookup",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "controller_context",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ctrl_world_context_decl",
-          "named": true
-        }
-      ]
+    "fields": {
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "quantity_value",
+            "named": true
+          }
+        ]
+      },
+      "variable": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "scoped_name",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
     "type": "controller_entry",
     "named": true,
     "fields": {
-      "feed_kind": {
+      "apply_at": {
         "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "controller_feed_kind",
+            "type": "scoped_name",
             "named": true
           }
         ]
       },
-      "feed_scope": {
+      "command_type": {
         "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "controller_feed_scope",
+            "type": "name",
             "named": true
           }
         ]
@@ -397,12 +284,12 @@
           }
         ]
       },
-      "output_type": {
+      "params": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
-            "type": "controller_output_type",
+            "type": "controller_params",
             "named": true
           }
         ]
@@ -412,41 +299,12 @@
         "required": true,
         "types": [
           {
-            "type": "controller_type",
+            "type": "name",
             "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "controller_params",
-          "named": true
-        },
-        {
-          "type": "world_lookup",
-          "named": true
-        }
-      ]
     }
-  },
-  {
-    "type": "controller_feed_kind",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "controller_feed_scope",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "controller_output_type",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "controller_params",
@@ -457,7 +315,7 @@
         "required": true,
         "types": [
           {
-            "type": "name",
+            "type": "constraint_ref",
             "named": true
           }
         ]
@@ -501,55 +359,8 @@
             "named": true
           }
         ]
-      }
-    }
-  },
-  {
-    "type": "ctrl_world_context_decl",
-    "named": true,
-    "fields": {
-      "decl": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "ctrl_world_declaration_list",
-            "named": true
-          }
-        ]
       },
-      "label": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "ctrl_world_declaration_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "ctrl_world_quantity_list",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ctrl_world_quantity",
-    "named": true,
-    "fields": {
-      "name": {
+      "solver": {
         "multiple": false,
         "required": true,
         "types": [
@@ -558,48 +369,8 @@
             "named": true
           }
         ]
-      },
-      "props": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "world_quantity_props",
-            "named": true
-          }
-        ]
-      },
-      "type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "ctrl_world_quantity_type",
-            "named": true
-          }
-        ]
       }
     }
-  },
-  {
-    "type": "ctrl_world_quantity_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ctrl_world_quantity",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ctrl_world_quantity_type",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "equality_constraint",
@@ -610,100 +381,37 @@
         "required": true,
         "types": [
           {
-            "type": "context_lookup",
+            "type": "context_ref",
             "named": true
           }
         ]
       }
     }
-  },
-  {
-    "type": "force_solver_entry",
-    "named": true,
-    "fields": {
-      "configuration": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      },
-      "force": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "world_lookup",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      },
-      "type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "force_solver_type",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "force_solver_entry_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "force_solver_entry",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "geo_prop_key",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "geo_prop_pair",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "geo_prop_key",
-          "named": true
-        },
-        {
-          "type": "name",
-          "named": true
-        },
-        {
-          "type": "name_list",
-          "named": true
-        }
-      ]
+    "fields": {
+      "key": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "property_key",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -722,52 +430,6 @@
     }
   },
   {
-    "type": "gravitational_field_props",
-    "named": true,
-    "fields": {
-      "unit": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "unit",
-            "named": true
-          }
-        ]
-      },
-      "x": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "number",
-            "named": true
-          }
-        ]
-      },
-      "y": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "number",
-            "named": true
-          }
-        ]
-      },
-      "z": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "number",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "greater_than_constraint",
     "named": true,
     "fields": {
@@ -776,7 +438,7 @@
         "required": true,
         "types": [
           {
-            "type": "context_lookup",
+            "type": "context_ref",
             "named": true
           }
         ]
@@ -784,49 +446,22 @@
     }
   },
   {
-    "type": "guarded_motion_specification",
+    "type": "handler_context",
     "named": true,
-    "fields": {
-      "context": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "motion_context",
-            "named": true
-          }
-        ]
-      },
-      "until": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "constraint_specification",
-            "named": true
-          }
-        ]
-      },
-      "when": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "constraint_specification",
-            "named": true
-          }
-        ]
-      },
-      "while": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "constraint_specification",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "spec_context_decl",
+          "named": true
+        },
+        {
+          "type": "world_context_decl",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -854,7 +489,7 @@
         "required": true,
         "types": [
           {
-            "type": "context_lookup",
+            "type": "context_ref",
             "named": true
           }
         ]
@@ -866,6 +501,16 @@
     "named": true,
     "fields": {
       "constraint": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "constraint_ref",
+            "named": true
+          }
+        ]
+      },
+      "name": {
         "multiple": false,
         "required": true,
         "types": [
@@ -929,19 +574,56 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "context_decl",
+          "type": "motion_context_decl",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "motion_spec_block",
+    "type": "motion_context_decl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "post_context_decl",
+          "named": true
+        },
+        {
+          "type": "pre_context_decl",
+          "named": true
+        },
+        {
+          "type": "spec_context_decl",
+          "named": true
+        },
+        {
+          "type": "world_context_decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "motion_spec",
     "named": true,
     "fields": {
+      "context": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "motion_context",
+            "named": true
+          }
+        ]
+      },
       "move": {
         "multiple": false,
         "required": false,
@@ -967,33 +649,18 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "name",
             "named": true
           }
         ]
       }
     },
     "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "guarded_motion_specification",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "name_list",
-    "named": true,
-    "fields": {},
-    "children": {
       "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "name",
+          "type": "constraint_section",
           "named": true
         }
       ]
@@ -1008,7 +675,7 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "name",
             "named": true
           }
         ]
@@ -1026,57 +693,235 @@
     }
   },
   {
-    "type": "post_lookup",
+    "type": "post_context_decl",
     "named": true,
     "fields": {
-      "variable": {
+      "declarations": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "name",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "pre_lookup",
-    "named": true,
-    "fields": {
-      "variable": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "priority_level",
-    "named": true,
-    "fields": {
-      "drivers": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name_list",
+            "type": "value_declaration_list",
             "named": true
           }
         ]
       },
-      "level": {
+      "label": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "integer",
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "pre_context_decl",
+    "named": true,
+    "fields": {
+      "declarations": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "value_declaration_list",
+            "named": true
+          }
+        ]
+      },
+      "label": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "property_key",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "quantity_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "scalar_quantity",
+          "named": true
+        },
+        {
+          "type": "vector_quantity",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "robot_anchor",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "robot_anchor_ref",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "robot_chain_anchor_ref",
+          "named": true
+        },
+        {
+          "type": "robot_component_anchor_ref",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "robot_base_component",
+    "named": true,
+    "fields": {
+      "root": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "robot_chain_anchor_ref",
+    "named": true,
+    "fields": {
+      "anchor": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "robot_anchor",
+            "named": true
+          }
+        ]
+      },
+      "robot": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "robot_chain_component",
+    "named": true,
+    "fields": {
+      "end": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "root": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "robot_component_anchor_ref",
+    "named": true,
+    "fields": {
+      "anchor": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "robot_anchor",
+            "named": true
+          }
+        ]
+      },
+      "component": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "robot_component_ref",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "robot_component_ref",
+    "named": true,
+    "fields": {
+      "component": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "robot": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "robot_manipulator_component",
+    "named": true,
+    "fields": {
+      "end": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
             "named": true
           }
         ]
@@ -1090,11 +935,120 @@
             "named": true
           }
         ]
+      },
+      "root": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
       }
     }
   },
   {
-    "type": "quantity",
+    "type": "robot_ref",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        },
+        {
+          "type": "robot_component_ref",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "robot_spec",
+    "named": true,
+    "fields": {
+      "base": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "robot_base_component",
+            "named": true
+          }
+        ]
+      },
+      "chain": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "robot_chain_component",
+            "named": true
+          }
+        ]
+      },
+      "manipulators": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "robot_manipulator_component",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "namespace": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "urdf": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "scalar_quantity",
     "named": true,
     "fields": {
       "unit": {
@@ -1120,35 +1074,10 @@
     }
   },
   {
-    "type": "quantity_property",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "quantity_ref",
+    "type": "solver_entry",
     "named": true,
     "fields": {
-      "axis": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "axis",
-            "named": true
-          }
-        ]
-      },
-      "property": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "quantity_property",
-            "named": true
-          }
-        ]
-      },
-      "quantity": {
+      "algorithm": {
         "multiple": false,
         "required": true,
         "types": [
@@ -1157,36 +1086,67 @@
             "named": true
           }
         ]
+      },
+      "end": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "robot_anchor_ref",
+            "named": true
+          }
+        ]
+      },
+      "gravity": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "scoped_name",
+            "named": true
+          }
+        ]
+      },
+      "gravity_value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "context_ref",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "robot": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "robot_ref",
+            "named": true
+          }
+        ]
+      },
+      "root": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "robot_anchor_ref",
+            "named": true
+          }
+        ]
       }
-    }
-  },
-  {
-    "type": "scalar_quantity_type",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "solver_algorithm",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "solver_spec",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "arm_solver_spec",
-          "named": true
-        },
-        {
-          "type": "base_solver_spec",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -1214,10 +1174,20 @@
     }
   },
   {
-    "type": "spec_lookup",
+    "type": "spec_context_decl",
     "named": true,
     "fields": {
-      "variable": {
+      "declarations": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "value_declaration_list",
+            "named": true
+          }
+        ]
+      },
+      "label": {
         "multiple": false,
         "required": true,
         "types": [
@@ -1238,15 +1208,24 @@
       "required": true,
       "types": [
         {
-          "type": "constraint_handler_block",
+          "type": "constraint_handler",
           "named": true
         },
         {
-          "type": "motion_spec_block",
+          "type": "motion_spec",
+          "named": true
+        },
+        {
+          "type": "robot_spec",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "subspace",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "unit",
@@ -1254,30 +1233,15 @@
     "fields": {}
   },
   {
-    "type": "units_declaration",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "name_list",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "value_declaration_list",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
-          "type": "value_variable_list",
+          "type": "value_variable",
           "named": true
         }
       ]
@@ -1302,17 +1266,17 @@
         "required": true,
         "types": [
           {
-            "type": "scalar_quantity_type",
+            "type": "name",
             "named": true
           }
         ]
       },
       "value": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
-            "type": "quantity",
+            "type": "quantity_value",
             "named": true
           }
         ]
@@ -1320,60 +1284,45 @@
     }
   },
   {
-    "type": "value_variable_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "value_variable",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "velocity_solver_entry",
+    "type": "vector_quantity",
     "named": true,
     "fields": {
-      "configuration": {
+      "unit": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "name",
+            "type": "unit",
             "named": true
           }
         ]
       },
-      "name": {
+      "x": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "name",
+            "type": "number",
             "named": true
           }
         ]
       },
-      "type": {
+      "y": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "velocity_solver_type",
+            "type": "number",
             "named": true
           }
         ]
       },
-      "velocity": {
+      "z": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "world_lookup",
+            "type": "number",
             "named": true
           }
         ]
@@ -1381,18 +1330,65 @@
     }
   },
   {
-    "type": "velocity_solver_entry_list",
+    "type": "view",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "velocity_solver_entry",
-          "named": true
-        }
-      ]
+    "fields": {
+      "axis": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "axis",
+            "named": true
+          }
+        ]
+      },
+      "quantity": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "context_quantity_ref",
+            "named": true
+          }
+        ]
+      },
+      "subspace": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "subspace",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "world_context_decl",
+    "named": true,
+    "fields": {
+      "declarations": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "world_declaration_list",
+            "named": true
+          }
+        ]
+      },
+      "label": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1400,30 +1396,14 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
-          "type": "world_quantity_list",
+          "type": "world_quantity",
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "world_lookup",
-    "named": true,
-    "fields": {
-      "variable": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -1445,7 +1425,7 @@
         "required": false,
         "types": [
           {
-            "type": "world_quantity_props",
+            "type": "geometric_props",
             "named": true
           }
         ]
@@ -1455,51 +1435,12 @@
         "required": true,
         "types": [
           {
-            "type": "world_quantity_type",
+            "type": "name",
             "named": true
           }
         ]
       }
     }
-  },
-  {
-    "type": "world_quantity_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "world_quantity",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "world_quantity_props",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "geometric_props",
-          "named": true
-        },
-        {
-          "type": "gravitational_field_props",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "world_quantity_type",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "(",
@@ -1526,14 +1467,6 @@
     "named": false
   },
   {
-    "type": "Angle",
-    "named": false
-  },
-  {
-    "type": "AngularVelocity",
-    "named": false
-  },
-  {
     "type": "CONSTRAINT_HANDLER",
     "named": false
   },
@@ -1546,14 +1479,6 @@
     "named": false
   },
   {
-    "type": "Force",
-    "named": false
-  },
-  {
-    "type": "Frame",
-    "named": false
-  },
-  {
     "type": "Kd",
     "named": false
   },
@@ -1562,19 +1487,7 @@
     "named": false
   },
   {
-    "type": "KinematicChain",
-    "named": false
-  },
-  {
     "type": "Kp",
-    "named": false
-  },
-  {
-    "type": "LinearDistance",
-    "named": false
-  },
-  {
-    "type": "LinearVelocity",
     "named": false
   },
   {
@@ -1598,19 +1511,7 @@
     "named": false
   },
   {
-    "type": "NewtonEuler",
-    "named": false
-  },
-  {
     "type": "Nm",
-    "named": false
-  },
-  {
-    "type": "PRIORITIES",
-    "named": false
-  },
-  {
-    "type": "Pose",
     "named": false
   },
   {
@@ -1622,7 +1523,15 @@
     "named": false
   },
   {
-    "type": "SOLVER",
+    "type": "ROBOT",
+    "named": false
+  },
+  {
+    "type": "SOLVERS",
+    "named": false
+  },
+  {
+    "type": "Solver",
     "named": false
   },
   {
@@ -1630,27 +1539,7 @@
     "named": false
   },
   {
-    "type": "Torque",
-    "named": false
-  },
-  {
     "type": "UNTIL",
-    "named": false
-  },
-  {
-    "type": "UniformGravitationalField",
-    "named": false
-  },
-  {
-    "type": "Units",
-    "named": false
-  },
-  {
-    "type": "VelocityTwist",
-    "named": false
-  },
-  {
-    "type": "Vereshchagin",
     "named": false
   },
   {
@@ -1666,19 +1555,11 @@
     "named": false
   },
   {
-    "type": "Wrench",
-    "named": false
-  },
-  {
     "type": "[",
     "named": false
   },
   {
     "type": "]",
-    "named": false
-  },
-  {
-    "type": "acceleration",
     "named": false
   },
   {
@@ -1694,11 +1575,15 @@
     "named": false
   },
   {
-    "type": "angular",
+    "type": "angvel",
     "named": false
   },
   {
     "type": "apply",
+    "named": false
+  },
+  {
+    "type": "as",
     "named": false
   },
   {
@@ -1715,14 +1600,6 @@
   },
   {
     "type": "between",
-    "named": false
-  },
-  {
-    "type": "cartesian",
-    "named": false
-  },
-  {
-    "type": "cartesian-force",
     "named": false
   },
   {
@@ -1743,16 +1620,8 @@
     "extra": true
   },
   {
-    "type": "configuration",
-    "named": false
-  },
-  {
     "type": "constraint",
     "named": false
-  },
-  {
-    "type": "controller_type",
-    "named": true
   },
   {
     "type": "decay",
@@ -1767,11 +1636,7 @@
     "named": false
   },
   {
-    "type": "distance",
-    "named": false
-  },
-  {
-    "type": "drivers",
+    "type": "end",
     "named": false
   },
   {
@@ -1783,24 +1648,12 @@
     "named": false
   },
   {
-    "type": "feed",
-    "named": false
-  },
-  {
     "type": "flag",
     "named": false
   },
   {
     "type": "force",
     "named": false
-  },
-  {
-    "type": "force-distribution",
-    "named": false
-  },
-  {
-    "type": "force_solver_type",
-    "named": true
   },
   {
     "type": "gravity",
@@ -1811,23 +1664,11 @@
     "named": false
   },
   {
-    "type": "identifier",
-    "named": true
-  },
-  {
     "type": "import",
     "named": false
   },
   {
-    "type": "integer",
-    "named": true
-  },
-  {
     "type": "is",
-    "named": false
-  },
-  {
-    "type": "joint-force",
     "named": false
   },
   {
@@ -1843,11 +1684,7 @@
     "named": false
   },
   {
-    "type": "level",
-    "named": false
-  },
-  {
-    "type": "linear",
+    "type": "linvel",
     "named": false
   },
   {
@@ -1860,6 +1697,10 @@
   },
   {
     "type": "m/s2",
+    "named": false
+  },
+  {
+    "type": "manipulators",
     "named": false
   },
   {
@@ -1883,7 +1724,11 @@
     "named": false
   },
   {
-    "type": "outputs",
+    "type": "orientation",
+    "named": false
+  },
+  {
+    "type": "position",
     "named": false
   },
   {
@@ -1899,12 +1744,16 @@
     "named": false
   },
   {
+    "type": "robot",
+    "named": false
+  },
+  {
     "type": "root",
     "named": false
   },
   {
-    "type": "rotation",
-    "named": false
+    "type": "scoped_name",
+    "named": true
   },
   {
     "type": "set",
@@ -1912,6 +1761,10 @@
   },
   {
     "type": "smaller",
+    "named": false
+  },
+  {
+    "type": "solver",
     "named": false
   },
   {
@@ -1935,16 +1788,12 @@
     "named": false
   },
   {
-    "type": "velocity",
+    "type": "type",
     "named": false
   },
   {
-    "type": "velocity-composition",
+    "type": "urdf",
     "named": false
-  },
-  {
-    "type": "velocity_solver_type",
-    "named": true
   },
   {
     "type": "when",

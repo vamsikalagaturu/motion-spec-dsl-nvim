@@ -1,3 +1,4 @@
+"ROBOT" @keyword
 "MOTION_SPEC" @keyword
 "CONSTRAINT_HANDLER" @keyword
 "MOVE" @keyword
@@ -8,14 +9,13 @@
 "MOTION" @keyword
 "MONITORS" @keyword
 "CONTROLLERS" @keyword
-"PRIORITIES" @keyword
-"SOLVER" @keyword
-"Units" @module
+"SOLVERS" @keyword
 "World" @module
 "Pre" @module
 "Spec" @module
 "Post" @module
 "import" @keyword.import
+"ns" @keyword.import
 
 "keeping" @keyword.operator
 "equal" @keyword.operator
@@ -36,31 +36,26 @@
 "when" @keyword.operator
 "while" @keyword.operator
 "active" @keyword.operator
+"as" @keyword.operator
 "apply" @keyword.operator
 "at" @keyword.operator
-"feed" @keyword.operator
 
-"outputs" @property
-"velocity-composition" @property
-"force-distribution" @property
-"configuration" @property
-"cartesian-force" @property
-"joint-force" @property
-"constraint" @property
-"algorithm" @property
+"type" @property
+"urdf" @property
+"base" @property
+"manipulators" @property
 "chain" @property
 "root" @property
+"end" @property
+"constraint" @property
+"solver" @property
+"robot" @property
+"algorithm" @property
 "gravity" @property
 "Kp" @property
 "Ki" @property
 "Kd" @property
 "decay" @property
-"velocity" @property
-"force" @property
-"level" @property
-"drivers" @property
-
-"ns" @keyword.import
 
 "{" @punctuation.bracket
 "}" @punctuation.bracket
@@ -68,74 +63,71 @@
 "]" @punctuation.bracket
 "(" @punctuation.bracket
 ")" @punctuation.bracket
+"." @punctuation.delimiter
+"," @punctuation.delimiter
+":" @punctuation.delimiter
 
 (comment) @comment
 (string) @string
 (number) @number
-(integer) @number
 (unit) @string.special
 
-(namespace_decl name: (identifier) @module)
+; Structural captures.  Types, algorithms, controllers, robots, and quantities
+; are highlighted from their grammar role, not from hard-coded name lists.
+(namespace_decl name: (name) @module)
 (import_decl uri: (string) @string.special)
-(motion_spec_block namespace: (identifier) @module)
-(constraint_handler_block namespace: (identifier) @module)
+(robot_spec namespace: (name) @module name: (name) @type)
+(motion_spec namespace: (name) @module name: (name) @function)
+(constraint_handler namespace: (name) @module name: (name) @function)
 
-; Specific field captures come before the general @constant predicate so
-; they take priority for names that happen to be all-uppercase.
-(motion_spec_block name: (name) @variable)
-(constraint_handler_block name: (name) @variable)
+(robot_spec type: (name) @type)
+(robot_chain_component root: (name) @variable.member end: (name) @variable.member)
+(robot_base_component root: (name) @variable.member)
+(robot_manipulator_component
+  name: (name) @variable.member
+  root: (name) @variable.member
+  end: (name) @variable.member)
 
-(context_decl label: (identifier) @variable)
-(ctrl_world_context_decl label: (identifier) @variable)
+(world_context_decl label: (name) @variable)
+(pre_context_decl label: (name) @variable)
+(spec_context_decl label: (name) @variable)
+(post_context_decl label: (name) @variable)
 
-(world_quantity name: (name) @variable)
-(ctrl_world_quantity name: (name) @variable)
-(value_variable name: (name) @variable)
+(world_quantity name: (name) @variable type: (name) @type)
+(value_variable name: (name) @variable type: (name) @type)
+(geo_prop_pair key: (property_key) @property value: (name) @variable.member)
+
 (constraint_specification name: (name) @variable)
-(controller_entry name: (name) @variable)
-(priority_level name: (name) @variable)
-(velocity_solver_entry name: (name) @variable)
-(force_solver_entry name: (name) @variable)
+(context_quantity_ref context: (name) @variable quantity: (name) @variable.member)
+(view subspace: (subspace) @property)
+(view axis: (axis) @property)
+(context_ref variable: (scoped_name) @variable.member)
 
-(monitor_entry constraint: (name) @variable)
-(monitor_trigger_event event: (name) @variable)
-(monitor_set_flag flag: (name) @variable)
+(monitor_entry name: (name) @variable constraint: (constraint_ref) @variable.member)
+(monitor_trigger_event event: (name) @constant)
+(monitor_set_flag flag: (name) @constant)
 
-(world_quantity type: (world_quantity_type) @type)
-(ctrl_world_quantity type: (ctrl_world_quantity_type) @type)
-(value_variable type: (scalar_quantity_type) @type)
-(controller_entry type: (controller_type) @type)
-(velocity_solver_entry type: (velocity_solver_type) @type)
-(force_solver_entry type: (force_solver_type) @type)
-(controller_entry output_type: (controller_output_type) @constant.builtin)
-(controller_entry feed_scope: (controller_feed_scope) @constant.builtin)
-(controller_entry feed_kind: (controller_feed_kind) @constant.builtin)
+(controller_entry
+  name: (name) @variable
+  type: (name) @type)
+(controller_entry command_type: (name) @type)
+(controller_entry apply_at: (scoped_name) @variable.member)
+(controller_params
+  constraint: (constraint_ref) @variable.member
+  solver: (name) @variable.member)
 
-(quantity_ref quantity: (name) @variable.member)
-(quantity_ref property: (quantity_property) @property)
-(quantity_ref axis: (axis) @property)
+(solver_entry
+  name: (name) @variable
+  robot: (_) @variable.member
+  algorithm: (name) @type
+  root: (_) @variable.member
+  gravity: (scoped_name) @variable.member
+  gravity_value: (context_ref) @variable.member)
+(solver_entry end: (_) @variable.member)
 
-(pre_lookup variable: (name) @variable.member)
-(spec_lookup variable: (name) @variable.member)
-(post_lookup variable: (name) @variable.member)
-(world_lookup variable: (name) @variable.member)
+(robot_component_ref robot: (name) @type component: (name) @variable.member)
+(robot_chain_anchor_ref robot: (name) @type anchor: (robot_anchor) @property)
+(robot_component_anchor_ref component: (robot_component_ref) @variable.member anchor: (robot_anchor) @property)
 
-(controller_params constraint: (name) @variable.member)
-(velocity_solver_entry configuration: (name) @variable.member)
-(force_solver_entry configuration: (name) @variable.member)
-
-(geo_prop_pair (name) @variable.member)
-
-(gravitational_field_props "x" @property)
-(gravitational_field_props "y" @property)
-(gravitational_field_props "z" @property)
-
-(geo_prop_key) @property
-(solver_algorithm) @type
-
-; Fallback: all-caps names not in a specific context are constants (e.g. QUDT)
 ((name) @constant
- (#match? @constant "^[A-Z][A-Z0-9_]*$"))
-
-((identifier) @constant
  (#match? @constant "^[A-Z][A-Z0-9_]*$"))

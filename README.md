@@ -1,12 +1,12 @@
 # motion-spec-dsl-nvim
 
-Neovim plugin for the `motion-spec-dsl` TextX guarded motion DSL (`.rob_mot` files).
+Neovim plugin for the `motion-spec-dsl` TextX guarded motion DSL (`.robmot` files).
 
 Provides:
 - Syntax highlighting via tree-sitter (with Vim regex fallback)
 - LSP diagnostics from the bundled textX grammar
 - Hover documentation for DSL keywords and solver/controller constructs
-- Completion items and snippets for imports, common blocks, monitors, controllers, solvers, routing phrases, and units
+- Completion items and snippets for imports, robots, common blocks, monitors, controllers, solvers, and units
 - Compact DSL unit validation (`rad/s`, `m/s`, `m/s2`, `Nm`, etc.)
 
 ## Requirements
@@ -27,7 +27,7 @@ Python dependencies (`pygls`, `textX`) are installed automatically into a plugin
   ft = "rob_mot",
   dependencies = { "nvim-treesitter/nvim-treesitter" },
   init = function()
-    vim.filetype.add({ extension = { rob_mot = "rob_mot" } })
+    vim.filetype.add({ extension = { robmot = "rob_mot" } })
   end,
   config = function()
     require("motion-spec-dsl-nvim").setup()
@@ -54,11 +54,11 @@ require("motion-spec-dsl-nvim").setup({
 ## Syntax highlighting
 
 Highlighted constructs include:
-- block keywords such as `MOTION_SPEC`, `CONSTRAINT_HANDLER`, `CONTEXT`, `WHEN`, `WHILE`, `UNTIL`
-- controller and solver keywords such as `MONITORS`, `CONTROLLERS`, `PRIORITIES`, `SOLVER`
-- namespace declarations and lookups (`ns`, `World[...]`, `Spec[...]`, `Post[...]`, `Pre[...]`)
-- imports (`import "common.rob_mot"`)
-- quantity and type names
+- block keywords such as `ROBOT`, `MOTION_SPEC`, `CONSTRAINT_HANDLER`, `CONTEXT`, `WHEN`, `WHILE`, `UNTIL`
+- controller and solver keywords such as `MONITORS`, `CONTROLLERS`, `SOLVERS`
+- namespace declarations, scoped references, and context labels such as `c1.pose.position.z`
+- imports (`import "common.robmot"`)
+- quantity and type names highlighted structurally from grammar positions
 - strings, numbers, units, and comments
 
 ## LSP Features
@@ -68,24 +68,25 @@ It uses the same textX grammar as the DSL package.
 
 Diagnostics:
 - parse errors for invalid DSL syntax
-- import resolution through textX `FQNImportURI` for `import "file.rob_mot"`
+- import resolution through textX `FQNImportURI` for `import "file.robmot"`
 - compact-unit errors when verbose QUDT-style units such as `M-PER-SEC` are used
 - section/keyword errors from the grammar
 
 Hover:
 - block signatures such as `MOTION_SPEC (ns=<namespace>) <name> { ... }`
-- import syntax for reusing `.rob_mot` files
-- section descriptions for `CONTEXT`, `WHEN`, `WHILE`, `UNTIL`, `SOLVER`, etc.
+- import syntax for reusing `.robmot` files
+- section descriptions for `CONTEXT`, `WHEN`, `WHILE`, `UNTIL`, `SOLVERS`, etc.
 - controller, monitor, and solver construct descriptions
 
 Completion:
-- `import "common.rob_mot"` snippet
+- `import "common.robmot"` snippet
 - `MOTION_SPEC` and `CONSTRAINT_HANDLER` block snippets
+- `ROBOT` block snippet
 - monitor snippets:
   - `monitor <constraint> and trigger event <event> when active`
   - `monitor <constraint> and set flag <flag> while active`
-- PID controller and controller-routing snippets
-- base solver snippets for `VelocityCompositionSolver` and `ForceDistributionSolver`
+- PID controller and optional `as ... apply at ...` snippets
+- generic `Solver` snippet with robot/chain anchors
 - compact unit completions: `rad/s`, `m/s`, `m/s2`, `Nm`, `rad`, `N`, etc.
 
 In LazyVim, use the normal LSP bindings:

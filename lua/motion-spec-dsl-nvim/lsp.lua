@@ -86,7 +86,7 @@ local function register_server(root, opts)
         default_config = vim.tbl_extend("force", server_opts, {
           name = "motion_spec_ls",
           docs = {
-            description = "Language server for the motion-spec-dsl TextX DSL (.rob_mot files)",
+            description = "Language server for the motion-spec-dsl TextX DSL (.robmot files)",
           },
         }),
       }
