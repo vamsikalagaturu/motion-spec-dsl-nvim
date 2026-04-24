@@ -1,5 +1,5 @@
 {
-  "name": "tree-sitter-motion-spec",
+  "name": "tree-sitter-robmot",
   "version": "0.1.0",
   "description": "Tree-sitter grammar for the motion-spec-dsl TextX DSL",
   "main": "bindings/node",
@@ -11,7 +11,7 @@
     {
       "scope": "source.robmot",
       "file-types": ["robmot"],
-      "highlights": "queries/motion_spec/highlights.scm"
+      "highlights": "queries/robmot/highlights.scm"
     }
   ],
   "devDependencies": {

@@ -4,7 +4,7 @@
 const commaSep1 = (rule) => seq(rule, repeat(seq(",", rule)), optional(","))
 
 module.exports = grammar({
-  name: "motion_spec",
+  name: "robmot",
 
   word: ($) => $.name,
 

@@ -18,7 +18,7 @@ function M.setup()
     local configs = type(parsers.get_parser_configs) == "function"
       and parsers.get_parser_configs()
       or parsers
-    configs.motion_spec = {
+    configs.robmot = {
       install_info = {
         url = root,
         files = { "src/parser.c" },
