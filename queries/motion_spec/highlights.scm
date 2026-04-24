@@ -1,3 +1,4 @@
+; Section keywords
 "ROBOT" @keyword
 "MOTION_SPEC" @keyword
 "CONSTRAINT_HANDLER" @keyword
@@ -10,13 +11,19 @@
 "MONITORS" @keyword
 "CONTROLLERS" @keyword
 "SOLVERS" @keyword
-"World" @module
-"Pre" @module
-"Spec" @module
-"Post" @module
 "import" @keyword.import
 "ns" @keyword.import
 
+; Context type modifiers
+"World" @keyword.type
+"Pre" @keyword.type
+"Spec" @keyword.type
+"Post" @keyword.type
+
+; Context scope in inline declarations: Spec[...], Pre[...], Post[...]
+(context_scope) @keyword.type
+
+; Constraint / expression operators
 "keeping" @keyword.operator
 "equal" @keyword.operator
 "to" @keyword.operator
@@ -28,6 +35,11 @@
 "is" @keyword.operator
 "larger" @keyword.operator
 "smaller" @keyword.operator
+"as" @keyword.operator
+"apply" @keyword.operator
+"at" @keyword.operator
+
+; Monitor operators
 "monitor" @keyword.operator
 "trigger" @keyword.operator
 "event" @keyword.operator
@@ -36,10 +48,8 @@
 "when" @keyword.operator
 "while" @keyword.operator
 "active" @keyword.operator
-"as" @keyword.operator
-"apply" @keyword.operator
-"at" @keyword.operator
 
+; Struct field keywords (constraint:, solver:, robot:, etc.)
 "type" @property
 "urdf" @property
 "base" @property
@@ -57,78 +67,74 @@
 "Kd" @property
 "decay" @property
 
+; Geometric property keys
+(property_key) @property
+
+; Subspace and axis are structural, not identifiers
+(view subspace: (subspace) @property)
+(view axis: (axis) @number)
+
+; Punctuation
 "{" @punctuation.bracket
 "}" @punctuation.bracket
 "[" @punctuation.bracket
 "]" @punctuation.bracket
 "(" @punctuation.bracket
 ")" @punctuation.bracket
-"." @punctuation.delimiter
 "," @punctuation.delimiter
 ":" @punctuation.delimiter
+"." @punctuation.delimiter
 
+; <...> references: angle brackets as punctuation, path as a reference.
+"<" @punctuation.special
+">" @punctuation.special
+(ref path: (fqn) @variable.member)
+
+; Literals
 (comment) @comment
 (string) @string
+(import_decl uri: (string) @string.special)
 (number) @number
 (unit) @string.special
 
-; Geo prop keys (of, wrt, ref-point, as-seen-by).
-(property_key) @property
-
-; Each name component inside a scoped_name (e.g. c2.frc-ref → c2 and frc-ref).
-(scoped_name (name) @variable)
-
-; Structural captures.  Types come from grammar role, not hard-coded name lists.
+; Top-level declarations
 (namespace_decl name: (name) @module)
-(import_decl uri: (string) @string.special)
 (robot_spec namespace: (name) @module name: (name) @type)
 (motion_spec namespace: (name) @module name: (name) @function)
 (constraint_handler namespace: (name) @module name: (name) @function)
 
+; Robot structural names
 (robot_spec type: (name) @type)
 (robot_chain_component root: (name) @variable end: (name) @variable)
 (robot_base_component root: (name) @variable)
-(robot_manipulator_component
-  name: (name) @variable
-  root: (name) @variable
-  end: (name) @variable)
+(robot_manipulator_component name: (name) @variable root: (name) @variable end: (name) @variable)
 
-(world_context_decl label: (name) @variable)
-(pre_context_decl label: (name) @variable)
-(spec_context_decl label: (name) @variable)
-(post_context_decl label: (name) @variable)
+; Context block labels (c1, c2, ...)
+(world_context_decl label: (name) @label)
+(pre_context_decl label: (name) @label)
+(spec_context_decl label: (name) @label)
+(post_context_decl label: (name) @label)
 
+; Inline declarations inside context blocks
 (world_quantity name: (name) @variable type: (name) @type)
 (value_variable name: (name) @variable type: (name) @type)
 (geo_prop_pair value: (name) @variable)
 
+; Constraint declarations
 (constraint_specification name: (name) @variable)
-(context_quantity_ref context: (name) @variable quantity: (name) @variable)
-(view subspace: (subspace) @property)
-(view axis: (axis) @constant.builtin)
 
-(monitor_entry name: (name) @variable constraint: (constraint_ref) @variable)
+; Monitor entries
+(monitor_entry name: (name) @variable)
 (monitor_trigger_event event: (name) @constant)
 (monitor_set_flag flag: (name) @constant)
 
-(controller_entry
-  name: (name) @variable
-  type: (name) @type)
+; Controller entries
+(controller_entry name: (name) @variable type: (name) @type)
 (controller_entry command_type: (name) @type)
-(controller_params
-  constraint: (constraint_ref) @variable
-  solver: (name) @variable)
 
-(solver_entry
-  name: (name) @variable
-  algorithm: (name) @type)
-(solver_entry robot: (_) @variable)
-(solver_entry root: (_) @variable)
-(solver_entry end: (_) @variable)
+; Solver entries
+(solver_entry name: (name) @variable algorithm: (name) @type)
 
-(robot_component_ref robot: (name) @type component: (name) @variable)
-(robot_chain_anchor_ref robot: (name) @type anchor: (robot_anchor) @property)
-(robot_component_anchor_ref component: (robot_component_ref) @variable anchor: (robot_anchor) @property)
-
-((name) @constant
- (#match? @constant "^[A-Z][A-Z0-9_]*$"))
+; Inline context_ref with square-bracket value override: [c2.var = 5.0 N]
+(context_ref variable: (fqn) @variable.member)
+(context_ref declaration: (value_variable) @variable)

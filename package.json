@@ -9,8 +9,8 @@
   },
   "tree-sitter": [
     {
-      "scope": "source.rob_mot",
-      "file-types": ["rob_mot"],
+      "scope": "source.robmot",
+      "file-types": ["robmot"],
       "highlights": "queries/motion_spec/highlights.scm"
     }
   ],

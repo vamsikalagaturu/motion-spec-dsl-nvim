@@ -5,9 +5,16 @@ local function plugin_root()
 end
 
 function M.setup()
+  local root = plugin_root()
+
+  -- Ensure Neovim can find the queries/ directory regardless of plugin manager.
+  local rtp = vim.opt.runtimepath:get()
+  if not vim.tbl_contains(rtp, root) then
+    vim.opt.runtimepath:append(root)
+  end
+
   local ok, parsers = pcall(require, "nvim-treesitter.parsers")
   if ok then
-    local root = plugin_root()
     local configs = type(parsers.get_parser_configs) == "function"
       and parsers.get_parser_configs()
       or parsers

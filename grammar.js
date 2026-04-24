@@ -21,28 +21,24 @@ module.exports = grammar({
 
     namespace_decl: ($) => seq("ns", field("name", $.name), "=", field("uri", $.string)),
 
+    // All cross-references are written <fqn> in the DSL.
+    ref: ($) => seq("<", field("path", $.fqn), ">"),
+
+    // A dotted path: one or more names joined by dots.
+    fqn: ($) => seq($.name, repeat(seq(".", $.name))),
+
     robot_spec: ($) =>
       seq(
-        "ROBOT",
-        "(",
-        "ns",
-        "=",
-        field("namespace", $.name),
-        ")",
-        field("name", $.name),
-        "{",
-        "type",
-        ":",
-        field("type", $.name),
-        ",",
-        "urdf",
-        ":",
-        field("urdf", $.string),
-        ",",
+        "ROBOT", "(", "ns", "=", field("namespace", $.name), ")",
+        field("name", $.name), "{",
+        "type", ":", field("type", $.name), ",",
+        "urdf", ":", field("urdf", $.string), ",",
         choice(
           seq(
             field("base", $.robot_base_component),
-            optional(seq(",", "manipulators", ":", "{", field("manipulators", optional(commaSep1($.robot_manipulator_component))), "}"))
+            optional(seq(",", "manipulators", ":", "{",
+              optional(commaSep1(field("manipulators", $.robot_manipulator_component))),
+            "}")),
           ),
           field("chain", $.robot_chain_component)
         ),
@@ -54,44 +50,26 @@ module.exports = grammar({
 
     robot_chain_component: ($) =>
       seq(
-        "chain",
-        ":",
-        "{",
-        "root",
-        ":",
-        field("root", $.name),
+        "chain", ":", "{",
+        "root", ":", field("root", $.name),
         optional(seq(",", "end", ":", field("end", $.name))),
         "}"
       ),
 
     robot_manipulator_component: ($) =>
       seq(
-        field("name", $.name),
-        ":",
-        "{",
-        "root",
-        ":",
-        field("root", $.name),
-        ",",
-        "end",
-        ":",
-        field("end", $.name),
+        field("name", $.name), ":", "{",
+        "root", ":", field("root", $.name), ",",
+        "end", ":", field("end", $.name),
         "}"
       ),
 
     motion_spec: ($) =>
       seq(
-        "MOTION_SPEC",
-        "(",
-        "ns",
-        "=",
-        field("namespace", $.name),
-        ")",
-        field("name", $.name),
-        "{",
+        "MOTION_SPEC", "(", "ns", "=", field("namespace", $.name), ")",
+        field("name", $.name), "{",
         optional(seq("MOVE", ":", field("move", $.string))),
-        "CONTEXT",
-        field("context", $.motion_context),
+        "CONTEXT", field("context", $.motion_context),
         repeat1($.constraint_section),
         "}"
       ),
@@ -101,24 +79,30 @@ module.exports = grammar({
     motion_context_decl: ($) =>
       choice($.world_context_decl, $.pre_context_decl, $.spec_context_decl, $.post_context_decl),
 
+    // Context declarations accept inline definitions and <...> cross-references.
     world_context_decl: ($) =>
-      seq(field("label", $.name), ":", "World", field("declarations", $.world_declaration_list)),
+      seq(field("label", $.name), ":", "World", "{",
+        optional(commaSep1(choice($.world_quantity, $.ref))),
+      "}"),
 
     pre_context_decl: ($) =>
-      seq(field("label", $.name), ":", "Pre", field("declarations", $.value_declaration_list)),
+      seq(field("label", $.name), ":", "Pre", "{",
+        optional(commaSep1(choice($.value_variable, $.ref))),
+      "}"),
 
     spec_context_decl: ($) =>
-      seq(field("label", $.name), ":", "Spec", field("declarations", $.value_declaration_list)),
+      seq(field("label", $.name), ":", "Spec", "{",
+        optional(commaSep1(choice($.value_variable, $.ref))),
+      "}"),
 
     post_context_decl: ($) =>
-      seq(field("label", $.name), ":", "Post", field("declarations", $.value_declaration_list)),
-
-    world_declaration_list: ($) => seq("{", optional(commaSep1($.world_quantity)), "}"),
+      seq(field("label", $.name), ":", "Post", "{",
+        optional(commaSep1(choice($.value_variable, $.ref))),
+      "}"),
 
     world_quantity: ($) =>
       seq(
-        field("name", $.name),
-        ":",
+        field("name", $.name), ":",
         field("type", $.name),
         optional(seq("{", field("props", $.geometric_props), "}"))
       ),
@@ -129,12 +113,9 @@ module.exports = grammar({
 
     property_key: (_) => choice("of", "wrt", "ref-point", "as-seen-by"),
 
-    value_declaration_list: ($) => seq("{", optional(commaSep1($.value_variable)), "}"),
-
     value_variable: ($) =>
       seq(
-        field("name", $.name),
-        ":",
+        field("name", $.name), ":",
         field("type", $.name),
         optional(field("value", $.quantity_value))
       ),
@@ -146,109 +127,100 @@ module.exports = grammar({
     vector_quantity: ($) =>
       seq(
         "{",
-        "x",
-        "=",
-        field("x", $.number),
-        ",",
-        "y",
-        "=",
-        field("y", $.number),
-        ",",
-        "z",
-        "=",
-        field("z", $.number),
+        "x", "=", field("x", $.number), ",",
+        "y", "=", field("y", $.number), ",",
+        "z", "=", field("z", $.number),
         field("unit", $.unit),
         "}"
       ),
 
+    // Each section holds inline constraint specs or bare <...> cross-references.
     constraint_section: ($) =>
       choice(
-        seq("WHEN", "{", repeat($.constraint_specification), "}"),
-        seq("WHILE", "{", repeat($.constraint_specification), "}"),
-        seq("UNTIL", "{", repeat($.constraint_specification), "}")
+        seq("WHEN",  "{", optional(commaSep1($.constraint_item)), "}"),
+        seq("WHILE", "{", optional(commaSep1($.constraint_item)), "}"),
+        seq("UNTIL", "{", optional(commaSep1($.constraint_item)), "}"),
       ),
+
+    constraint_item: ($) => choice($.constraint_specification, $.ref),
 
     constraint_specification: ($) =>
       seq(
-        field("name", $.name),
-        ":",
+        field("name", $.name), ":",
         optional("keeping"),
         field("view", $.view),
         field("expr", $.constraint_expression),
-        optional(",")
       ),
 
+    // View: <context.quantity>.subspace[.axis]
     view: ($) =>
       seq(
-        field("quantity", $.context_quantity_ref),
-        ".",
-        field("subspace", $.subspace),
+        field("quantity", $.ref),
+        ".", field("subspace", $.subspace),
         optional(seq(".", field("axis", $.axis)))
       ),
-
-    context_quantity_ref: ($) => seq(field("context", $.name), ".", field("quantity", $.name)),
 
     subspace: (_) => choice("angvel", "linvel", "torque", "force", "orientation", "position"),
     axis: (_) => choice("x", "y", "z"),
 
     constraint_expression: ($) =>
-      choice($.equality_constraint, $.greater_than_constraint, $.less_than_constraint, $.bilateral_constraint),
+      choice(
+        $.equality_constraint,
+        $.greater_than_constraint,
+        $.less_than_constraint,
+        $.bilateral_constraint,
+      ),
 
     equality_constraint: ($) => seq("equal", "to", field("reference", $.context_ref)),
 
     greater_than_constraint: ($) =>
-      seq(choice(seq("greater", "than"), seq("is", "larger", "than")), field("threshold", $.context_ref)),
+      seq(
+        choice(seq("greater", "than"), seq("is", "larger", "than")),
+        field("threshold", $.context_ref),
+      ),
 
     less_than_constraint: ($) =>
-      seq(choice(seq("less", "than"), seq("is", "smaller", "than")), field("threshold", $.context_ref)),
+      seq(
+        choice(seq("less", "than"), seq("is", "smaller", "than")),
+        field("threshold", $.context_ref),
+      ),
 
     bilateral_constraint: ($) =>
       seq("between", field("lower", $.context_ref), "and", field("upper", $.context_ref)),
 
+    // Three forms of context reference:
+    //   <c2.vel-ref>                            -- reference to a declared variable
+    //   [c2.vel-ref = 5.0 N]                    -- reference with inline value override
+    //   Spec[inline-var: LinearVelocity = 0.0 m/s]  -- inline value declaration
     context_ref: ($) =>
       choice(
-        seq("[", field("variable", $.scoped_name), optional(field("value", $.quantity_value)), "]"),
-        field("variable", $.scoped_name)
+        $.ref,
+        seq("[", field("variable", $.fqn), optional(field("value", $.quantity_value)), "]"),
+        seq(field("scope", $.context_scope), "[", field("declaration", $.value_variable), "]"),
       ),
+
+    context_scope: (_) => choice("Pre", "Spec", "Post"),
 
     constraint_handler: ($) =>
       seq(
-        "CONSTRAINT_HANDLER",
-        "(",
-        "ns",
-        "=",
-        field("namespace", $.name),
-        ")",
-        field("name", $.name),
-        "{",
-        "CONTEXT",
-        field("context", $.handler_context),
-        "MOTION",
-        ":",
-        field("motion", $.name),
-        optional(seq("MONITORS", "{", repeat($.monitor_entry), "}")),
-        "CONTROLLERS",
-        "{",
-        repeat($.controller_entry),
-        "}",
-        "SOLVERS",
-        "{",
-        commaSep1($.solver_entry),
-        "}",
+        "CONSTRAINT_HANDLER", "(", "ns", "=", field("namespace", $.name), ")",
+        field("name", $.name), "{",
+        "CONTEXT", field("context", $.handler_context),
+        "MOTION", ":", field("motion", $.ref),
+        optional(seq("MONITORS", "{", optional(commaSep1($.monitor_entry)), "}")),
+        "CONTROLLERS", "{", optional(commaSep1($.controller_item)), "}",
+        "SOLVERS", "{", optional(commaSep1($.solver_item)), "}",
         "}"
       ),
 
-    handler_context: ($) => seq("{", optional(commaSep1(choice($.world_context_decl, $.spec_context_decl))), "}"),
+    handler_context: ($) =>
+      seq("{", optional(commaSep1(choice($.world_context_decl, $.spec_context_decl))), "}"),
 
     monitor_entry: ($) =>
       seq(
-        field("name", $.name),
-        ":",
-        "monitor",
-        field("constraint", $.constraint_ref),
-        "and",
+        field("name", $.name), ":",
+        "monitor", field("constraint", $.ref), "and",
         choice($.monitor_trigger_event, $.monitor_set_flag),
-        optional(",")
       ),
 
     monitor_trigger_event: ($) =>
@@ -257,92 +229,49 @@ module.exports = grammar({
     monitor_set_flag: ($) =>
       seq("set", "flag", field("flag", $.name), "while", "active"),
 
+    // A controller item is either an inline PID definition or a <handler.ctrl> reference.
+    controller_item: ($) => choice($.controller_entry, $.ref),
+
     controller_entry: ($) =>
       seq(
-        field("name", $.name),
-        ":",
-        field("type", $.name),
-        "{",
+        field("name", $.name), ":",
+        field("type", $.name), "{",
         field("params", $.controller_params),
         "}",
         optional(seq("as", field("command_type", $.name))),
-        optional(seq("apply", "at", field("apply_at", $.scoped_name))),
-        optional(",")
+        optional(seq("apply", "at", field("apply_at", $.ref))),
       ),
 
     controller_params: ($) =>
       seq(
-        "constraint",
-        ":",
-        field("constraint", $.constraint_ref),
-        ",",
-        "solver",
-        ":",
-        field("solver", $.name),
-        ",",
-        "Kp",
-        "=",
-        field("kp", $.number),
-        ",",
-        "Ki",
-        "=",
-        field("ki", $.number),
-        ",",
-        "Kd",
-        "=",
-        field("kd", $.number),
-        optional(seq(",", "decay", ":", field("decay", $.number)))
+        "constraint", ":", field("constraint", $.ref), ",",
+        "solver", ":", field("solver", $.ref), ",",
+        "Kp", "=", field("kp", $.number), ",",
+        "Ki", "=", field("ki", $.number), ",",
+        "Kd", "=", field("kd", $.number),
+        optional(seq(",", "decay", ":", field("decay", $.number))),
       ),
 
-    constraint_ref: ($) => seq(field("motion", $.name), ".", field("constraint", $.name)),
+    // A solver item is either an inline Solver definition or a <handler.solver> reference.
+    solver_item: ($) => choice($.solver_entry, $.ref),
 
     solver_entry: ($) =>
       seq(
-        field("name", $.name),
-        ":",
-        "Solver",
-        "{",
-        "robot",
-        ":",
-        field("robot", $.robot_ref),
+        field("name", $.name), ":", "Solver", "{",
+        "robot", ":", field("robot", $.ref), ",",
+        "algorithm", ":", field("algorithm", $.name), ",",
+        "root", ":", field("root", $.ref),
+        optional(seq(",", "end", ":", field("end", $.ref))),
         ",",
-        "algorithm",
-        ":",
-        field("algorithm", $.name),
-        ",",
-        "root",
-        ":",
-        field("root", $.robot_anchor_ref),
-        optional(seq(",", "end", ":", field("end", $.robot_anchor_ref))),
-        ",",
-        "gravity",
-        ":",
-        field("gravity", $.scoped_name),
-        "equal",
-        "to",
-        field("gravity_value", $.context_ref),
+        "gravity", ":", field("gravity", $.ref),
+        "equal", "to", field("gravity_value", $.context_ref),
         "}"
       ),
-
-    robot_ref: ($) => choice($.robot_component_ref, $.name),
-
-    robot_component_ref: ($) => seq(field("robot", $.name), ".", field("component", $.name)),
-
-    robot_anchor_ref: ($) => choice($.robot_chain_anchor_ref, $.robot_component_anchor_ref),
-
-    robot_chain_anchor_ref: ($) =>
-      seq(field("robot", $.name), ".", "chain", ".", field("anchor", $.robot_anchor)),
-
-    robot_component_anchor_ref: ($) =>
-      seq(field("component", $.robot_component_ref), ".", field("anchor", $.robot_anchor)),
-
-    robot_anchor: (_) => choice("root", "end"),
-
-    scoped_name: ($) => seq($.name, repeat(seq(".", $.name))),
 
     name: (_) => token(prec(-1, /[A-Za-z_][A-Za-z0-9_-]*/)),
     string: (_) => /"[^"\\]*(\\.[^"\\]*)*"/,
     number: (_) => /[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?/,
-    unit: (_) => choice("rad/s", "m/s2", "m/s", "cm/s", "deg/s", "Nm", "rad", "deg", "cm", "m", "N"),
+    unit: (_) =>
+      choice("rad/s", "m/s2", "m/s", "cm/s", "deg/s", "Nm", "rad", "deg", "cm", "m", "N"),
   },
 })

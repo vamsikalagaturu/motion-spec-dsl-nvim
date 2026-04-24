@@ -76,7 +76,7 @@
         "required": true,
         "types": [
           {
-            "type": "name",
+            "type": "ref",
             "named": true
           }
         ]
@@ -104,10 +104,10 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "controller_entry",
+          "type": "controller_item",
           "named": true
         },
         {
@@ -115,36 +115,29 @@
           "named": true
         },
         {
-          "type": "solver_entry",
+          "type": "solver_item",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "constraint_ref",
+    "type": "constraint_item",
     "named": true,
-    "fields": {
-      "constraint": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      },
-      "motion": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "constraint_specification",
+          "named": true
+        },
+        {
+          "type": "ref",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -156,7 +149,7 @@
       "required": false,
       "types": [
         {
-          "type": "constraint_specification",
+          "type": "constraint_item",
           "named": true
         }
       ]
@@ -199,35 +192,29 @@
     }
   },
   {
-    "type": "context_quantity_ref",
+    "type": "context_ref",
     "named": true,
     "fields": {
-      "context": {
+      "declaration": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
-            "type": "name",
+            "type": "value_variable",
             "named": true
           }
         ]
       },
-      "quantity": {
+      "scope": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
-            "type": "name",
+            "type": "context_scope",
             "named": true
           }
         ]
-      }
-    }
-  },
-  {
-    "type": "context_ref",
-    "named": true,
-    "fields": {
+      },
       "value": {
         "multiple": false,
         "required": false,
@@ -240,15 +227,30 @@
       },
       "variable": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
-            "type": "scoped_name",
+            "type": "fqn",
             "named": true
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "ref",
+          "named": true
+        }
+      ]
     }
+  },
+  {
+    "type": "context_scope",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "controller_entry",
@@ -259,7 +261,7 @@
         "required": false,
         "types": [
           {
-            "type": "scoped_name",
+            "type": "ref",
             "named": true
           }
         ]
@@ -307,6 +309,25 @@
     }
   },
   {
+    "type": "controller_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "controller_entry",
+          "named": true
+        },
+        {
+          "type": "ref",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "controller_params",
     "named": true,
     "fields": {
@@ -315,7 +336,7 @@
         "required": true,
         "types": [
           {
-            "type": "constraint_ref",
+            "type": "ref",
             "named": true
           }
         ]
@@ -365,7 +386,7 @@
         "required": true,
         "types": [
           {
-            "type": "name",
+            "type": "ref",
             "named": true
           }
         ]
@@ -386,6 +407,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "fqn",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -505,7 +541,7 @@
         "required": true,
         "types": [
           {
-            "type": "constraint_ref",
+            "type": "ref",
             "named": true
           }
         ]
@@ -696,16 +732,6 @@
     "type": "post_context_decl",
     "named": true,
     "fields": {
-      "declarations": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "value_declaration_list",
-            "named": true
-          }
-        ]
-      },
       "label": {
         "multiple": false,
         "required": true,
@@ -716,22 +742,26 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ref",
+          "named": true
+        },
+        {
+          "type": "value_variable",
+          "named": true
+        }
+      ]
     }
   },
   {
     "type": "pre_context_decl",
     "named": true,
     "fields": {
-      "declarations": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "value_declaration_list",
-            "named": true
-          }
-        ]
-      },
       "label": {
         "multiple": false,
         "required": true,
@@ -742,6 +772,20 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ref",
+          "named": true
+        },
+        {
+          "type": "value_variable",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -769,39 +813,15 @@
     }
   },
   {
-    "type": "robot_anchor",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "robot_anchor_ref",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "robot_chain_anchor_ref",
-          "named": true
-        },
-        {
-          "type": "robot_component_anchor_ref",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "robot_base_component",
+    "type": "ref",
     "named": true,
     "fields": {
-      "root": {
+      "path": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "name",
+            "type": "fqn",
             "named": true
           }
         ]
@@ -809,20 +829,10 @@
     }
   },
   {
-    "type": "robot_chain_anchor_ref",
+    "type": "robot_base_component",
     "named": true,
     "fields": {
-      "anchor": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "robot_anchor",
-            "named": true
-          }
-        ]
-      },
-      "robot": {
+      "root": {
         "multiple": false,
         "required": true,
         "types": [
@@ -849,58 +859,6 @@
         ]
       },
       "root": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "robot_component_anchor_ref",
-    "named": true,
-    "fields": {
-      "anchor": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "robot_anchor",
-            "named": true
-          }
-        ]
-      },
-      "component": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "robot_component_ref",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "robot_component_ref",
-    "named": true,
-    "fields": {
-      "component": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      },
-      "robot": {
         "multiple": false,
         "required": true,
         "types": [
@@ -949,25 +907,6 @@
     }
   },
   {
-    "type": "robot_ref",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "name",
-          "named": true
-        },
-        {
-          "type": "robot_component_ref",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "robot_spec",
     "named": true,
     "fields": {
@@ -995,10 +934,6 @@
         "multiple": true,
         "required": false,
         "types": [
-          {
-            "type": ",",
-            "named": false
-          },
           {
             "type": "robot_manipulator_component",
             "named": true
@@ -1074,21 +1009,6 @@
     }
   },
   {
-    "type": "scoped_name",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "name",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "solver_entry",
     "named": true,
     "fields": {
@@ -1107,7 +1027,7 @@
         "required": false,
         "types": [
           {
-            "type": "robot_anchor_ref",
+            "type": "ref",
             "named": true
           }
         ]
@@ -1117,7 +1037,7 @@
         "required": true,
         "types": [
           {
-            "type": "scoped_name",
+            "type": "ref",
             "named": true
           }
         ]
@@ -1147,7 +1067,7 @@
         "required": true,
         "types": [
           {
-            "type": "robot_ref",
+            "type": "ref",
             "named": true
           }
         ]
@@ -1157,11 +1077,30 @@
         "required": true,
         "types": [
           {
-            "type": "robot_anchor_ref",
+            "type": "ref",
             "named": true
           }
         ]
       }
+    }
+  },
+  {
+    "type": "solver_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ref",
+          "named": true
+        },
+        {
+          "type": "solver_entry",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1192,16 +1131,6 @@
     "type": "spec_context_decl",
     "named": true,
     "fields": {
-      "declarations": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "value_declaration_list",
-            "named": true
-          }
-        ]
-      },
       "label": {
         "multiple": false,
         "required": true,
@@ -1212,6 +1141,20 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ref",
+          "named": true
+        },
+        {
+          "type": "value_variable",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1246,21 +1189,6 @@
     "type": "unit",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "value_declaration_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "value_variable",
-          "named": true
-        }
-      ]
-    }
   },
   {
     "type": "value_variable",
@@ -1363,7 +1291,7 @@
         "required": true,
         "types": [
           {
-            "type": "context_quantity_ref",
+            "type": "ref",
             "named": true
           }
         ]
@@ -1384,16 +1312,6 @@
     "type": "world_context_decl",
     "named": true,
     "fields": {
-      "declarations": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "world_declaration_list",
-            "named": true
-          }
-        ]
-      },
       "label": {
         "multiple": false,
         "required": true,
@@ -1404,16 +1322,15 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "world_declaration_list",
-    "named": true,
-    "fields": {},
+    },
     "children": {
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "ref",
+          "named": true
+        },
         {
           "type": "world_quantity",
           "named": true
@@ -1478,7 +1395,15 @@
     "named": false
   },
   {
+    "type": "<",
+    "named": false
+  },
+  {
     "type": "=",
+    "named": false
+  },
+  {
+    "type": ">",
     "named": false
   },
   {

@@ -1,6 +1,5 @@
 // Motion Specification DSL Grammar
-// LSP parser copy. Keep syntax broad in name/type positions; semantic
-// validation belongs to the main motion-spec-dsl package.
+// LSP parser copy. Keep syntax broad; semantic validation belongs to the main package.
 
 Model:
     imports*=ImportDecl
@@ -58,19 +57,24 @@ MotionContextDecl:
 ;
 
 WorldContextDecl:
-    name=Name ":" "World" "{" declaration*=WorldQuantity[","] "}"
+    name=Name ":" "World" "{" declaration*=WorldQuantityItem[","] "}"
 ;
 
 PreContextDecl:
-    name=Name ":" "Pre" "{" declaration*=ValueVariable[","] "}"
+    name=Name ":" "Pre" "{" declaration*=ValueVariableItem[","] "}"
 ;
 
 SpecContextDecl:
-    name=Name ":" "Spec" "{" declaration*=ValueVariable[","] "}"
+    name=Name ":" "Spec" "{" declaration*=ValueVariableItem[","] "}"
 ;
 
 PostContextDecl:
-    name=Name ":" "Post" "{" declaration*=ValueVariable[","] "}"
+    name=Name ":" "Post" "{" declaration*=ValueVariableItem[","] "}"
+;
+
+// World context items: inline definition or <fqn> reference.
+WorldQuantityItem:
+    WorldQuantity | Ref
 ;
 
 WorldQuantity:
@@ -87,6 +91,11 @@ GeoPropPair:
 
 GeoPropKey:
     "of" | "wrt" | "ref-point" | "as-seen-by"
+;
+
+// Value context items: inline definition or <fqn> reference.
+ValueVariableItem:
+    ValueVariable | Ref
 ;
 
 ValueVariable:
@@ -110,15 +119,20 @@ ConstraintSection:
 ;
 
 WhenSection:
-    "WHEN" "{" constraints*=ConstraintSpecification[","]? "}"
+    "WHEN" "{" constraints*=ConstraintItem[","]? "}"
 ;
 
 WhileSection:
-    "WHILE" "{" constraints*=ConstraintSpecification[","]? "}"
+    "WHILE" "{" constraints*=ConstraintItem[","]? "}"
 ;
 
 UntilSection:
-    "UNTIL" "{" constraints*=ConstraintSpecification[","]? "}"
+    "UNTIL" "{" constraints*=ConstraintItem[","]? "}"
+;
+
+// Constraint items: inline specification or <motion.constraint> cross-reference.
+ConstraintItem:
+    ConstraintSpecification | Ref
 ;
 
 ConstraintSpecification:
@@ -126,11 +140,7 @@ ConstraintSpecification:
 ;
 
 View:
-    quantity=ContextQuantityRef "." subspace=SubSpace ("." axis=Axis)?
-;
-
-ContextQuantityRef:
-    context=Name "." quantity=Name
+    "<" fqn=FQN ">" "." subspace=SubSpace ("." axis=Axis)?
 ;
 
 SubSpace:
@@ -162,17 +172,22 @@ BilateralConstraint:
 ;
 
 ContextRef:
-    "[" valRef=ScopedName quantityValue=QuantityValue? "]"
-  | value=ScopedName
+    "<" fqn=FQN ">"
+  | "[" variable=FQN quantityValue=QuantityValue? "]"
+  | scope=ContextScope "[" declaration=ValueVariable "]"
+;
+
+ContextScope:
+    "Pre" | "Spec" | "Post"
 ;
 
 ConstraintHandler:
     "CONSTRAINT_HANDLER" "(" "ns" "=" ns=[NamespaceDeclare|Name] ")" name=Name "{"
         "CONTEXT" "{" context*=HandlerContextDecl[","] "}"
-        "MOTION" ":" motion=Name
+        "MOTION" ":" motion=Ref
         ("MONITORS" "{" monitors*=MonitorEntry[","]? "}")?
-        "CONTROLLERS" "{" controllers*=ControllerEntry[","]? "}"
-        "SOLVERS" "{" solvers+=SolverEntry[","] "}"
+        "CONTROLLERS" "{" controllers*=ControllerItem[","]? "}"
+        "SOLVERS" "{" solvers*=SolverItem[","]? "}"
     "}"
 ;
 
@@ -181,11 +196,16 @@ HandlerContextDecl:
 ;
 
 MonitorEntry:
-    name=Name ":" "monitor" constraint=ConstraintRef "and"
+    name=Name ":" "monitor" constraint=Ref "and"
     (
         ("trigger" "event" event=Name "when" "active") |
         ("set" "flag" flag=Name "while" "active")
     )
+;
+
+// Controller items: inline PID entry or <handler.ctrl> cross-reference.
+ControllerItem:
+    ControllerEntry | Ref
 ;
 
 ControllerEntry:
@@ -193,50 +213,39 @@ ControllerEntry:
         params=ControllerParams
     "}"
     ("as" command_type=Name)?
-    ("apply" "at" apply_at=ScopedName)?
+    ("apply" "at" apply_at=Ref)?
 ;
 
 ControllerParams:
-    "constraint" ":" constraint=ConstraintRef ","
-    "solver" ":" solver=Name ","
+    "constraint" ":" constraint=Ref ","
+    "solver" ":" solver=Ref ","
     "Kp" "=" kp=FLOAT ","
     "Ki" "=" ki=FLOAT ","
     "Kd" "=" kd=FLOAT
     ("," "decay" ":" decay=FLOAT)?
 ;
 
-ConstraintRef:
-    motion=Name "." constraint=Name
+// Solver items: inline Solver definition or <handler.solver> cross-reference.
+SolverItem:
+    SolverEntry | Ref
 ;
 
 SolverEntry:
     name=Name ":" "Solver" "{"
-        "robot" ":" robot=RobotRef ","
+        "robot" ":" robot=Ref ","
         "algorithm" ":" algorithm=Name ","
-        "root" ":" root=RobotAnchorRef
-        ("," "end" ":" end=RobotAnchorRef)?
-        "," "gravity" ":" gravity=ScopedName "equal" "to" gravity_value=ContextRef
+        "root" ":" root=Ref
+        ("," "end" ":" end=Ref)?
+        "," "gravity" ":" gravity=Ref "equal" "to" gravity_value=ContextRef
     "}"
 ;
 
-RobotRef:
-    RobotComponentRef | Name
+// All cross-references use <fqn> syntax.
+Ref:
+    "<" fqn=FQN ">"
 ;
 
-RobotComponentRef:
-    robot=Name "." component=Name
-;
-
-RobotAnchorRef:
-    robot=Name "." "chain" "." anchor=RobotAnchor
-  | component=RobotComponentRef "." anchor=RobotAnchor
-;
-
-RobotAnchor:
-    "root" | "end"
-;
-
-ScopedName:
+FQN:
     Name+["."]
 ;
 

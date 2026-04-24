@@ -1,11 +1,4 @@
-(robot_spec) @indent
-(motion_spec) @indent
-(constraint_handler) @indent
-(motion_context) @indent
-(handler_context) @indent
-(world_declaration_list) @indent
-(value_declaration_list) @indent
-(constraint_section) @indent
-(monitor_entry) @indent
-(controller_entry) @indent
-(solver_entry) @indent
+"{" @indent.begin
+"}" @indent.end @branch
+"[" @indent.begin
+"]" @indent.end @branch
