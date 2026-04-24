@@ -67,12 +67,12 @@
 "Kd" @property
 "decay" @property
 
-; Geometric property keys
-(property_key) @property
+; Geometric property keys (of, wrt, ref-point, as-seen-by) act as keywords.
+(property_key) @keyword.operator
 
-; Subspace and axis are structural, not identifiers
-(view subspace: (subspace) @property)
-(view axis: (axis) @number)
+; Subspace (linvel, angvel, ...) and axis are enum-like selectors.
+(view subspace: (subspace) @constant)
+(view axis: (axis) @constant)
 
 ; Punctuation
 "{" @punctuation.bracket
@@ -128,6 +128,7 @@
 (monitor_set_flag flag: (name) @constant)
 (controller_entry name: (name) @function type: (name) @type)
 (controller_entry command_type: (name) @type)
+"Solver" @type
 (solver_entry name: (name) @function algorithm: (name) @type)
 
 ; Inline context_ref: [c2.var = 5.0 N] path, and Scope[name: Type = val] declaration.
