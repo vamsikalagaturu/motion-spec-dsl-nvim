@@ -67,12 +67,11 @@
 "Kd" @property
 "decay" @property
 
-; Geometric property keys (of, wrt, ref-point, as-seen-by) act as keywords.
+; Geometric property keys (of, wrt, ref-point, as-seen-by) and subspace
+; selectors (linvel, angvel, ...) are all structural qualifiers.
 (property_key) @keyword.operator
-
-; Subspace (linvel, angvel, ...) and axis are enum-like selectors.
-(view subspace: (subspace) @constant)
-(view axis: (axis) @constant)
+(view subspace: (subspace) @keyword.operator)
+(view axis: (axis) @keyword.operator)
 
 ; Punctuation
 "{" @punctuation.bracket
@@ -115,24 +114,21 @@
 (spec_context_decl label: (name) @label)
 (post_context_decl label: (name) @label)
 
-; Inline declarations inside context blocks
-(world_quantity name: (name) @variable type: (name) @type)
-(value_variable name: (name) @variable type: (name) @type)
-(geo_prop_pair value: (name) @variable)
+; All defined names use @constant (yellow in TokyoNight) regardless of where
+; they appear — context vars, constraints, monitors, controllers, solvers.
+(world_quantity name: (name) @constant type: (name) @type)
+(value_variable name: (name) @constant type: (name) @type)
+(geo_prop_pair value: (name) @constant)
 
-; Named constraint/monitor/controller/solver declarations: @function so they
-; are visually distinct from ref paths (@variable.member) and types (@type).
-(constraint_specification name: (name) @function)
-(monitor_entry name: (name) @function)
+(constraint_specification name: (name) @constant)
+(monitor_entry name: (name) @constant)
 (monitor_trigger_event event: (name) @constant)
 (monitor_set_flag flag: (name) @constant)
-(controller_entry name: (name) @function type: (name) @type)
+(controller_entry name: (name) @constant type: (name) @type)
 (controller_entry command_type: (name) @type)
 "Solver" @type
-(solver_entry name: (name) @function algorithm: (name) @type)
+(solver_entry name: (name) @constant algorithm: (name) @type)
 
 ; Inline context_ref: [c2.var = 5.0 N] path, and Scope[name: Type = val] declaration.
-; Capture only the name field of the inline value_variable so that the type
-; field is still picked up as @type by the value_variable rule above.
 (context_ref variable: (fqn) @variable.member)
-(context_ref declaration: (value_variable name: (name) @variable))
+(context_ref declaration: (value_variable name: (name) @constant))
