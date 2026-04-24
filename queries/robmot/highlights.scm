@@ -1,7 +1,7 @@
-; Main section definers - should be distinct
-"ROBOT" @keyword
-"MOTION_SPEC" @keyword
-"CONSTRAINT_HANDLER" @keyword
+; Top-level declarations use a separate standard capture from block headers.
+"ROBOT" @keyword.directive
+"MOTION_SPEC" @keyword.directive
+"CONSTRAINT_HANDLER" @keyword.directive
 
 ; Block definers - different from section definers
 "MOVE" @keyword
@@ -18,11 +18,11 @@
 "import" @keyword
 "ns" @keyword
 
-; Context type modifiers
-"World" @type
-"Pre" @type
-"Spec" @type
-"Post" @type
+; Context scope/type markers are distinct from concrete DSL types.
+"World" @type.builtin
+"Pre" @type.builtin
+"Spec" @type.builtin
+"Post" @type.builtin
 
 ; Context scope in inline declarations: Spec[...], Pre[...], Post[...]
 (context_scope) @keyword.type
@@ -53,30 +53,27 @@
 "while" @keyword.operator
 "active" @keyword.operator
 
-; Struct field labels (non-geometric) - attributes
-"type" @keyword.attribute
-"urdf" @keyword.attribute
-"base" @keyword.attribute
-"manipulators" @keyword.attribute
-"chain" @keyword.attribute
-"root" @keyword.attribute
-"end" @keyword.attribute
-"constraint" @keyword.attribute
-"solver" @keyword.attribute
-"robot" @keyword.attribute
-"algorithm" @keyword.attribute
-"Kp" @keyword.attribute
-"Ki" @keyword.attribute
-"Kd" @keyword.attribute
-"decay" @keyword.attribute
-"gravity" @keyword.attribute
-(property_key) @keyword.attribute
+; Struct field labels use @label so they stay distinct from both block keywords
+; and referenced names inside <...>.
+"type" @label
+"urdf" @label
+"base" @label
+"manipulators" @label
+"chain" @label
+"root" @label
+"end" @label
+"constraint" @label
+"solver" @label
+"robot" @label
+"algorithm" @label
+"Kp" @label
+"Ki" @label
+"Kd" @label
+"decay" @label
+"gravity" @label
 
-; Geometric property keys - should be different from attributes
-"of" @keyword.property
-"wrt" @keyword.property
-"ref-point" @keyword.property
-"as-seen-by" @keyword.property
+; Geometric property keys are also labels.
+(property_key) @label
 
 ; Subspace selectors (linvel, angvel, ...) and axis (x, y, z) are distinct
 ; dimensional qualifiers — different from operator keywords.
@@ -132,7 +129,7 @@
 
 (constraint_specification name: (name) @constant)
 (monitor_entry name: (name) @constant)
-(monitor_trigger_event event: (name) @constant)
+(monitor_trigger_event event: (name) @label)
 (monitor_set_flag flag: (name) @constant)
 (controller_entry name: (name) @constant type: (name) @type)
 (controller_entry command_type: (name) @type)

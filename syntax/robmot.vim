@@ -68,7 +68,7 @@ highlight default link motionSpecKeyword     Keyword
 highlight default link motionSpecContextType PreProc
 highlight default link motionSpecOperator    Operator
 highlight default link motionSpecProperty    Special
-highlight default link motionSpecAttribute   Function
+highlight default link motionSpecAttribute   Constant
 highlight default link motionSpecType        Type
 highlight default link motionSpecDeclName    Identifier
 highlight default link motionSpecSubspace    Function
