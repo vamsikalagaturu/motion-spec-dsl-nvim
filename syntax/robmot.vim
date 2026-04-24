@@ -65,7 +65,7 @@ syntax region motionSpecString start=/"/ end=/"/ oneline
 syntax match motionSpecComment /\/\/.*/
 
 highlight default link motionSpecKeyword     Keyword
-highlight default link motionSpecContextType Keyword
+highlight default link motionSpecContextType PreProc
 highlight default link motionSpecOperator    Operator
 highlight default link motionSpecProperty    Special
 highlight default link motionSpecAttribute   Identifier
