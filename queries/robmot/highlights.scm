@@ -49,29 +49,29 @@
 "while" @keyword.operator
 "active" @keyword.operator
 
-; Struct field keywords (constraint:, solver:, robot:, etc.)
-"type" @property
-"urdf" @property
-"base" @property
-"manipulators" @property
-"chain" @property
-"root" @property
-"end" @property
-"constraint" @property
-"solver" @property
-"robot" @property
-"algorithm" @property
-"gravity" @property
-"Kp" @property
-"Ki" @property
-"Kd" @property
-"decay" @property
+; Struct field labels and geometric prop keys are grammar reserved words.
+"type" @keyword
+"urdf" @keyword
+"base" @keyword
+"manipulators" @keyword
+"chain" @keyword
+"root" @keyword
+"end" @keyword
+"constraint" @keyword
+"solver" @keyword
+"robot" @keyword
+"algorithm" @keyword
+"gravity" @keyword
+"Kp" @keyword
+"Ki" @keyword
+"Kd" @keyword
+"decay" @keyword
+(property_key) @keyword
 
-; Geometric property keys (of, wrt, ref-point, as-seen-by) and subspace
-; selectors (linvel, angvel, ...) are all structural qualifiers.
-(property_key) @keyword.operator
-(view subspace: (subspace) @keyword.operator)
-(view axis: (axis) @keyword.operator)
+; Subspace selectors (linvel, angvel, ...) and axis (x, y, z) are distinct
+; dimensional qualifiers — different from operator keywords.
+(view subspace: (subspace) @function)
+(view axis: (axis) @number)
 
 ; Punctuation
 "{" @punctuation.bracket
