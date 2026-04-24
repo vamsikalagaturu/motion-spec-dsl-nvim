@@ -1,7 +1,9 @@
-; Section keywords
-"ROBOT" @keyword
-"MOTION_SPEC" @keyword
-"CONSTRAINT_HANDLER" @keyword
+; Main section definers - should be distinct
+"ROBOT" @label
+"MOTION_SPEC" @label
+"CONSTRAINT_HANDLER" @label
+
+; Block definers - different from section definers
 "MOVE" @keyword
 "CONTEXT" @keyword
 "WHEN" @keyword
@@ -11,8 +13,10 @@
 "MONITORS" @keyword
 "CONTROLLERS" @keyword
 "SOLVERS" @keyword
-"import" @keyword.import
-"ns" @keyword.import
+
+; Import/namespace
+"import" @keyword
+"ns" @keyword
 
 ; Context type modifiers
 "World" @type
@@ -49,24 +53,29 @@
 "while" @keyword.operator
 "active" @keyword.operator
 
-; Struct field labels and geometric prop keys are grammar reserved words.
-"type" @keyword
-"urdf" @keyword
-"base" @keyword
-"manipulators" @keyword
-"chain" @keyword
-"root" @keyword
-"end" @keyword
-"constraint" @keyword
-"solver" @keyword
-"robot" @keyword
-"algorithm" @keyword
-"gravity" @keyword
-"Kp" @keyword
-"Ki" @keyword
-"Kd" @keyword
-"decay" @keyword
-(property_key) @keyword
+; Struct field labels and geometric prop keys - attributes
+"type" @keyword.attribute
+"urdf" @keyword.attribute
+"base" @keyword.attribute
+"manipulators" @keyword.attribute
+"chain" @keyword.attribute
+"root" @keyword.attribute
+"end" @keyword.attribute
+"constraint" @keyword.attribute
+"solver" @keyword.attribute
+"robot" @keyword.attribute
+"algorithm" @keyword.attribute
+"Kp" @keyword.attribute
+"Ki" @keyword.attribute
+"Kd" @keyword.attribute
+"decay" @keyword.attribute
+(property_key) @keyword.attribute
+
+; Geometric property keys
+"of" @keyword.property
+"wrt" @keyword.property
+"ref-point" @keyword.property
+"as-seen-by" @keyword.property
 
 ; Subspace selectors (linvel, angvel, ...) and axis (x, y, z) are distinct
 ; dimensional qualifiers — different from operator keywords.
