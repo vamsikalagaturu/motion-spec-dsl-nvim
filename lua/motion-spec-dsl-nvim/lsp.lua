@@ -67,7 +67,7 @@ local function register_server(root, opts)
 
   local server_opts = {
     cmd = { python, server_script },
-    filetypes = { "rob_mot" },
+    filetypes = { "robmot" },
     root_markers = { ".git" },
     settings = {},
   }

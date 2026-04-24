@@ -82,4 +82,4 @@ highlight default link motionSpecRefPath     Identifier
 highlight default link motionSpecRefDot      Delimiter
 highlight default link motionSpecInlineRef   Special
 
-let b:current_syntax = 'rob_mot'
+let b:current_syntax = 'robmot'

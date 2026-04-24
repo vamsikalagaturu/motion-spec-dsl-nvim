@@ -25,7 +25,7 @@ function M.setup()
         generate_requires_npm = false,
         requires_generate_from_grammar = false,
       },
-      filetype = "rob_mot",
+      filetype = "robmot",
       maintainers = {},
     }
   end
