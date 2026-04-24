@@ -15,10 +15,10 @@
 "ns" @keyword.import
 
 ; Context type modifiers
-"World" @keyword.type
-"Pre" @keyword.type
-"Spec" @keyword.type
-"Post" @keyword.type
+"World" @type
+"Pre" @type
+"Spec" @type
+"Post" @type
 
 ; Context scope in inline declarations: Spec[...], Pre[...], Post[...]
 (context_scope) @keyword.type
