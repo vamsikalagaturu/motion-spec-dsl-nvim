@@ -120,21 +120,18 @@
 (value_variable name: (name) @variable type: (name) @type)
 (geo_prop_pair value: (name) @variable)
 
-; Constraint declarations
-(constraint_specification name: (name) @variable)
-
-; Monitor entries
-(monitor_entry name: (name) @variable)
+; Named constraint/monitor/controller/solver declarations: @function so they
+; are visually distinct from ref paths (@variable.member) and types (@type).
+(constraint_specification name: (name) @function)
+(monitor_entry name: (name) @function)
 (monitor_trigger_event event: (name) @constant)
 (monitor_set_flag flag: (name) @constant)
-
-; Controller entries
-(controller_entry name: (name) @variable type: (name) @type)
+(controller_entry name: (name) @function type: (name) @type)
 (controller_entry command_type: (name) @type)
+(solver_entry name: (name) @function algorithm: (name) @type)
 
-; Solver entries
-(solver_entry name: (name) @variable algorithm: (name) @type)
-
-; Inline context_ref with square-bracket value override: [c2.var = 5.0 N]
+; Inline context_ref: [c2.var = 5.0 N] path, and Scope[name: Type = val] declaration.
+; Capture only the name field of the inline value_variable so that the type
+; field is still picked up as @type by the value_variable rule above.
 (context_ref variable: (fqn) @variable.member)
-(context_ref declaration: (value_variable) @variable)
+(context_ref declaration: (value_variable name: (name) @variable))
