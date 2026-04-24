@@ -1,7 +1,7 @@
 ; Main section definers - should be distinct
-"ROBOT" @label
-"MOTION_SPEC" @label
-"CONSTRAINT_HANDLER" @label
+"ROBOT" @keyword
+"MOTION_SPEC" @keyword
+"CONSTRAINT_HANDLER" @keyword
 
 ; Block definers - different from section definers
 "MOVE" @keyword
@@ -53,7 +53,7 @@
 "while" @keyword.operator
 "active" @keyword.operator
 
-; Struct field labels and geometric prop keys - attributes
+; Struct field labels (non-geometric) - attributes
 "type" @keyword.attribute
 "urdf" @keyword.attribute
 "base" @keyword.attribute
@@ -69,9 +69,10 @@
 "Ki" @keyword.attribute
 "Kd" @keyword.attribute
 "decay" @keyword.attribute
+"gravity" @keyword.attribute
 (property_key) @keyword.attribute
 
-; Geometric property keys
+; Geometric property keys - should be different from attributes
 "of" @keyword.property
 "wrt" @keyword.property
 "ref-point" @keyword.property
