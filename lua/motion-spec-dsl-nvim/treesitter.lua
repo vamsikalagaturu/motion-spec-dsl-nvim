@@ -17,24 +17,15 @@ local function ensure_parser(root)
   end
 
   vim.fn.mkdir(parser_dir, "p")
-
-  local inc = root .. "/src"
-  local cmd = string.format(
-    'gcc -O2 -shared -fPIC -o %s %s -I %s',
+  local out = vim.fn.system(string.format(
+    "gcc -O2 -shared -fPIC -o %s %s -I %s",
     vim.fn.shellescape(so),
     vim.fn.shellescape(src),
-    vim.fn.shellescape(inc)
-  )
-
-  vim.fn.jobstart(cmd, {
-    on_exit = function(_, code)
-      if code == 0 then
-        vim.notify("motion-spec-dsl-nvim: parser compiled.", vim.log.levels.INFO)
-      else
-        vim.notify("motion-spec-dsl-nvim: parser compilation failed (exit " .. code .. ").", vim.log.levels.WARN)
-      end
-    end,
-  })
+    vim.fn.shellescape(root .. "/src")
+  ))
+  if vim.v.shell_error ~= 0 then
+    vim.notify("motion-spec-dsl-nvim: parser compilation failed:\n" .. out, vim.log.levels.WARN)
+  end
 end
 
 function M.setup()
