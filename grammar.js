@@ -32,21 +32,32 @@ module.exports = grammar({
         "ROBOT", "(", "ns", "=", field("namespace", $.name), ")",
         field("name", $.name), "{",
         "type", ":", field("type", $.name), ",",
-        "urdf", ":", field("urdf", $.string), ",",
         choice(
           seq(
+            "model", ":", field("model", $.robot_model), ",",
+            "urdf", ":", field("urdf", $.string), ",",
+            field("chain", $.robot_chain_component)
+          ),
+          seq(
+            "urdf", ":", field("urdf", $.string), ",",
             field("base", $.robot_base_component),
             optional(seq(",", "manipulators", ":", "{",
               optional(commaSep1(field("manipulators", $.robot_manipulator_component))),
             "}")),
-          ),
-          field("chain", $.robot_chain_component)
+          )
         ),
         "}"
       ),
 
+    robot_model: (_) => choice("KinovaGen3", "Kelo"),
+
     robot_base_component: ($) =>
-      seq("base", ":", "{", "root", ":", field("root", $.name), "}"),
+      seq(
+        "base", ":", "{",
+        "model", ":", field("model", $.robot_model), ",",
+        "chain", ":", "{", "root", ":", field("root", $.name), "}",
+        "}"
+      ),
 
     robot_chain_component: ($) =>
       seq(
@@ -59,8 +70,11 @@ module.exports = grammar({
     robot_manipulator_component: ($) =>
       seq(
         field("name", $.name), ":", "{",
+        "model", ":", field("model", $.robot_model), ",",
+        "chain", ":", "{",
         "root", ":", field("root", $.name), ",",
         "end", ":", field("end", $.name),
+        "}",
         "}"
       ),
 

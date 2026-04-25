@@ -62,6 +62,7 @@
 ; Struct field labels use @label so they stay distinct from both block keywords
 ; and referenced names inside <...>.
 "type" @label
+"model" @label
 "urdf" @label
 "base" @label
 "manipulators" @label
@@ -116,9 +117,10 @@
 
 ; Robot structural names
 (robot_spec type: (name) @type)
+(robot_spec model: (robot_model) @type)
 (robot_chain_component root: (name) @variable end: (name) @variable)
-(robot_base_component root: (name) @variable)
-(robot_manipulator_component name: (name) @variable root: (name) @variable end: (name) @variable)
+(robot_base_component model: (robot_model) @type root: (name) @variable)
+(robot_manipulator_component name: (name) @variable model: (robot_model) @type root: (name) @variable end: (name) @variable)
 
 ; Context block labels (c1, c2, ...)
 (world_context_decl label: (name) @label)

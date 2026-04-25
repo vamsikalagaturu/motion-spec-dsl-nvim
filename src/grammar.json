@@ -212,31 +212,84 @@
           "value": ","
         },
         {
-          "type": "STRING",
-          "value": "urdf"
-        },
-        {
-          "type": "STRING",
-          "value": ":"
-        },
-        {
-          "type": "FIELD",
-          "name": "urdf",
-          "content": {
-            "type": "SYMBOL",
-            "name": "string"
-          }
-        },
-        {
-          "type": "STRING",
-          "value": ","
-        },
-        {
           "type": "CHOICE",
           "members": [
             {
               "type": "SEQ",
               "members": [
+                {
+                  "type": "STRING",
+                  "value": "model"
+                },
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "model",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "robot_model"
+                  }
+                },
+                {
+                  "type": "STRING",
+                  "value": ","
+                },
+                {
+                  "type": "STRING",
+                  "value": "urdf"
+                },
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "urdf",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "string"
+                  }
+                },
+                {
+                  "type": "STRING",
+                  "value": ","
+                },
+                {
+                  "type": "FIELD",
+                  "name": "chain",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "robot_chain_component"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "urdf"
+                },
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "urdf",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "string"
+                  }
+                },
+                {
+                  "type": "STRING",
+                  "value": ","
+                },
                 {
                   "type": "FIELD",
                   "name": "base",
@@ -332,14 +385,6 @@
                   ]
                 }
               ]
-            },
-            {
-              "type": "FIELD",
-              "name": "chain",
-              "content": {
-                "type": "SYMBOL",
-                "name": "robot_chain_component"
-              }
             }
           ]
         },
@@ -349,12 +394,57 @@
         }
       ]
     },
+    "robot_model": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "KinovaGen3"
+        },
+        {
+          "type": "STRING",
+          "value": "Kelo"
+        }
+      ]
+    },
     "robot_base_component": {
       "type": "SEQ",
       "members": [
         {
           "type": "STRING",
           "value": "base"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "STRING",
+          "value": "model"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "model",
+          "content": {
+            "type": "SYMBOL",
+            "name": "robot_model"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "STRING",
+          "value": "chain"
         },
         {
           "type": "STRING",
@@ -379,6 +469,10 @@
             "type": "SYMBOL",
             "name": "name"
           }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
         },
         {
           "type": "STRING",
@@ -477,6 +571,38 @@
         },
         {
           "type": "STRING",
+          "value": "model"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "FIELD",
+          "name": "model",
+          "content": {
+            "type": "SYMBOL",
+            "name": "robot_model"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "STRING",
+          "value": "chain"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "STRING",
+          "value": "{"
+        },
+        {
+          "type": "STRING",
           "value": "root"
         },
         {
@@ -510,6 +636,10 @@
             "type": "SYMBOL",
             "name": "name"
           }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
         },
         {
           "type": "STRING",

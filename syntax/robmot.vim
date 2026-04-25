@@ -13,7 +13,7 @@ syntax keyword motionSpecKeyword ns import
 syntax keyword motionSpecContextType World Pre Spec Post
 
 " DSL type names: always Type regardless of position
-syntax keyword motionSpecType Manipulator MobileBase MobileManipulator
+syntax keyword motionSpecType Manipulator MobileBase MobileManipulator KinovaGen3 Kelo
 syntax keyword motionSpecType VelocityTwist Wrench Pose KinematicChain Frame Link Gravity
 syntax keyword motionSpecType AngularVelocity LinearVelocity Force Torque
 syntax keyword motionSpecType LinearDistance AngularDistance Angle AngularDistance Vector
@@ -30,7 +30,7 @@ syntax keyword motionSpecOperator is larger smaller as for apply at via
 syntax keyword motionSpecOperator monitor trigger event set flag when while active
 
 " Struct field keywords
-syntax keyword motionSpecProperty type urdf base manipulators chain root end
+syntax keyword motionSpecProperty type model urdf base manipulators chain root end
 syntax keyword motionSpecProperty constraint solver algorithm robot gravity
 syntax keyword motionSpecProperty x y z Kp Ki Kd decay
 

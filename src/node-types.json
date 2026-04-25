@@ -846,6 +846,16 @@
     "type": "robot_base_component",
     "named": true,
     "fields": {
+      "model": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "robot_model",
+            "named": true
+          }
+        ]
+      },
       "root": {
         "multiple": false,
         "required": true,
@@ -898,6 +908,16 @@
           }
         ]
       },
+      "model": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "robot_model",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -919,6 +939,11 @@
         ]
       }
     }
+  },
+  {
+    "type": "robot_model",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "robot_spec",
@@ -950,6 +975,16 @@
         "types": [
           {
             "type": "robot_manipulator_component",
+            "named": true
+          }
+        ]
+      },
+      "model": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "robot_model",
             "named": true
           }
         ]
@@ -1442,7 +1477,15 @@
     "named": false
   },
   {
+    "type": "Kelo",
+    "named": false
+  },
+  {
     "type": "Ki",
+    "named": false
+  },
+  {
+    "type": "KinovaGen3",
     "named": false
   },
   {
@@ -1680,6 +1723,10 @@
   },
   {
     "type": "manipulators",
+    "named": false
+  },
+  {
+    "type": "model",
     "named": false
   },
   {

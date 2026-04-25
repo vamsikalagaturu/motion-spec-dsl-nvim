@@ -22,18 +22,20 @@ Specification:
 RobotSpec:
     "ROBOT" "(" "ns" "=" ns=[NamespaceDeclare|Name] ")" name=Name "{"
         "type" ":" type=Name ","
-        "urdf" ":" urdf=STRING ","
         (
+            "model" ":" model=Name ","
+            "urdf" ":" urdf=STRING ","
+            chain=RobotChainComponent
+            |
+            "urdf" ":" urdf=STRING ","
             base=RobotBaseComponent
             ("," "manipulators" ":" "{" manipulators*=RobotManipulatorComponent[","] "}")?
-            |
-            chain=RobotChainComponent
         )
     "}"
 ;
 
 RobotBaseComponent:
-    "base" ":" "{" "root" ":" root=Name "}"
+    "base" ":" "{" "model" ":" model=Name "," "chain" ":" "{" "root" ":" root=Name "}" "}"
 ;
 
 RobotChainComponent:
@@ -41,7 +43,7 @@ RobotChainComponent:
 ;
 
 RobotManipulatorComponent:
-    name=Name ":" "{" "root" ":" root=Name "," "end" ":" end=Name "}"
+    name=Name ":" "{" "model" ":" model=Name "," "chain" ":" "{" "root" ":" root=Name "," "end" ":" end=Name "}" "}"
 ;
 
 MotionSpec:
