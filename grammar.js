@@ -174,21 +174,17 @@ module.exports = grammar({
         $.bilateral_constraint,
       ),
 
-    equality_constraint: ($) =>
-      seq(
-        choice(seq("equal", "to"), seq("away", "from")),
-        field("reference", $.context_ref),
-      ),
+    equality_constraint: ($) => seq("equal", "to", field("reference", $.context_ref)),
 
     greater_than_constraint: ($) =>
       seq(
-        choice(seq("greater", "than"), seq("is", "larger", "than")),
+        choice(seq("greater", "than"), seq("is", "larger", "than"), seq("away", "from")),
         field("threshold", $.context_ref),
       ),
 
     less_than_constraint: ($) =>
       seq(
-        choice(seq("less", "than"), seq("is", "smaller", "than")),
+        choice(seq("less", "than"), seq("is", "smaller", "than"), seq("up", "to")),
         field("threshold", $.context_ref),
       ),
 

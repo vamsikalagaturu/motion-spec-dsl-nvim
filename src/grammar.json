@@ -1737,35 +1737,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "equal"
-                },
-                {
-                  "type": "STRING",
-                  "value": "to"
-                }
-              ]
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "away"
-                },
-                {
-                  "type": "STRING",
-                  "value": "from"
-                }
-              ]
-            }
-          ]
+          "type": "STRING",
+          "value": "equal"
+        },
+        {
+          "type": "STRING",
+          "value": "to"
         },
         {
           "type": "FIELD",
@@ -1810,6 +1787,19 @@
                 {
                   "type": "STRING",
                   "value": "than"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "away"
+                },
+                {
+                  "type": "STRING",
+                  "value": "from"
                 }
               ]
             }
@@ -1858,6 +1848,19 @@
                 {
                   "type": "STRING",
                   "value": "than"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "up"
+                },
+                {
+                  "type": "STRING",
+                  "value": "to"
                 }
               ]
             }

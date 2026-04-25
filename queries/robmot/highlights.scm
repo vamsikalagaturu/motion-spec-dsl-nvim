@@ -33,6 +33,7 @@
 "to" @keyword.operator
 "away" @keyword.operator
 "from" @keyword.operator
+"up" @keyword.operator
 "greater" @keyword.operator
 "than" @keyword.operator
 "less" @keyword.operator
