@@ -140,7 +140,7 @@ ConstraintSpecification:
 ;
 
 View:
-    "<" fqn=FQN ">" "." subspace=SubSpace ("." axis=Axis)?
+    "<" fqn=FQN ">" ("." subspace=SubSpace ("." axis=Axis)?)?
 ;
 
 SubSpace:
@@ -213,12 +213,13 @@ ControllerEntry:
         params=ControllerParams
     "}"
     ("as" command_type=Name)?
+    ("for" control_mode=Name)?
     ("apply" "at" apply_at=Ref)?
+    ("via" solver=Ref)?
 ;
 
 ControllerParams:
     "constraint" ":" constraint=Ref ","
-    "solver" ":" solver=Ref ","
     "Kp" "=" kp=FLOAT ","
     "Ki" "=" ki=FLOAT ","
     "Kd" "=" kd=FLOAT
