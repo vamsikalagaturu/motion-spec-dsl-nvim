@@ -152,12 +152,15 @@ module.exports = grammar({
         field("expr", $.constraint_expression),
       ),
 
-    // View: <context.quantity>.subspace[.axis]
+    // View: <context.quantity>[.subspace[.axis]]
+    // JointPosition views omit the subspace entirely.
     view: ($) =>
       seq(
         field("quantity", $.ref),
-        ".", field("subspace", $.subspace),
-        optional(seq(".", field("axis", $.axis)))
+        optional(seq(
+          ".", field("subspace", $.subspace),
+          optional(seq(".", field("axis", $.axis)))
+        ))
       ),
 
     subspace: (_) => choice("angvel", "linvel", "torque", "force", "orientation", "position"),
@@ -239,13 +242,14 @@ module.exports = grammar({
         field("params", $.controller_params),
         "}",
         optional(seq("as", field("command_type", $.name))),
+        optional(seq("for", field("control_mode", $.name))),
         optional(seq("apply", "at", field("apply_at", $.ref))),
+        optional(seq("via", field("solver", $.ref))),
       ),
 
     controller_params: ($) =>
       seq(
         "constraint", ":", field("constraint", $.ref), ",",
-        "solver", ":", field("solver", $.ref), ",",
         "Kp", "=", field("kp", $.number), ",",
         "Ki", "=", field("ki", $.number), ",",
         "Kd", "=", field("kd", $.number),

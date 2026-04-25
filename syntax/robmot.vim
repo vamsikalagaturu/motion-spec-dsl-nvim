@@ -18,11 +18,13 @@ syntax keyword motionSpecType VelocityTwist Wrench Pose KinematicChain Frame Lin
 syntax keyword motionSpecType AngularVelocity LinearVelocity Force Torque
 syntax keyword motionSpecType LinearDistance AngularDistance Angle AngularDistance Vector
 syntax keyword motionSpecType Vereshchagin NewtonEuler VelocityDistribution ForceDistribution
+syntax keyword motionSpecType ACHD RNE
+syntax keyword motionSpecType Posture
 syntax keyword motionSpecType PID Solver
 
 " Constraint / expression operators
 syntax keyword motionSpecOperator keeping equal to greater than less between and
-syntax keyword motionSpecOperator is larger smaller as apply at
+syntax keyword motionSpecOperator is larger smaller as for apply at via
 
 " Monitor operators
 syntax keyword motionSpecOperator monitor trigger event set flag when while active
@@ -36,8 +38,8 @@ syntax keyword motionSpecProperty x y z Kp Ki Kd decay
 syntax keyword motionSpecAttribute of wrt ref-point as-seen-by
 
 " Subspace and axis literals inside a view
-syntax match motionSpecSubspace /\.\zs\(angvel\|linvel\|torque\|force\|orientation\|position\)\ze[.}]/
-syntax match motionSpecAxis /\.\zs[xyz]\ze[>,]/
+syntax match motionSpecSubspace /\.\zs\(angvel\|linvel\|torque\|force\|orientation\|position\)\ze[.> ,\t]/
+syntax match motionSpecAxis /\.\zs[xyz]\ze[> ,\t\n]/
 
 " <...> references: the whole <path> is a reference, angle brackets included.
 syntax region motionSpecRef start=/</ end=/>/ oneline
@@ -70,7 +72,7 @@ highlight default link motionSpecOperator    Operator
 highlight default link motionSpecProperty    Special
 highlight default link motionSpecAttribute   Constant
 highlight default link motionSpecType        Type
-highlight default link motionSpecDeclName    Identifier
+highlight default link motionSpecDeclName    Constant
 highlight default link motionSpecSubspace    Function
 highlight default link motionSpecAxis        Constant
 highlight default link motionSpecNumber      Number

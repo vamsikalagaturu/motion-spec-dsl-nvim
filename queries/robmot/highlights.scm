@@ -40,8 +40,10 @@
 "larger" @keyword.operator
 "smaller" @keyword.operator
 "as" @keyword.operator
+"for" @keyword.operator
 "apply" @keyword.operator
 "at" @keyword.operator
+"via" @keyword.operator
 
 ; Monitor operators
 "monitor" @keyword.operator
@@ -133,6 +135,7 @@
 (monitor_set_flag flag: (name) @constant)
 (controller_entry name: (name) @constant type: (name) @type)
 (controller_entry command_type: (name) @type)
+(controller_entry control_mode: (name) @type)
 "Solver" @type
 (solver_entry name: (name) @constant algorithm: (name) @type)
 

@@ -276,6 +276,16 @@
           }
         ]
       },
+      "control_mode": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -292,6 +302,16 @@
         "types": [
           {
             "type": "controller_params",
+            "named": true
+          }
+        ]
+      },
+      "solver": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "ref",
             "named": true
           }
         ]
@@ -377,16 +397,6 @@
         "types": [
           {
             "type": "number",
-            "named": true
-          }
-        ]
-      },
-      "solver": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "ref",
             "named": true
           }
         ]
@@ -1298,7 +1308,7 @@
       },
       "subspace": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "subspace",
@@ -1592,6 +1602,10 @@
     "named": false
   },
   {
+    "type": "for",
+    "named": false
+  },
+  {
     "type": "force",
     "named": false
   },
@@ -1700,10 +1714,6 @@
     "named": false
   },
   {
-    "type": "solver",
-    "named": false
-  },
-  {
     "type": "string",
     "named": true
   },
@@ -1729,6 +1739,10 @@
   },
   {
     "type": "urdf",
+    "named": false
+  },
+  {
+    "type": "via",
     "named": false
   },
   {
