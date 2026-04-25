@@ -1545,6 +1545,10 @@
     "named": false
   },
   {
+    "type": "away",
+    "named": false
+  },
+  {
     "type": "base",
     "named": false
   },
@@ -1607,6 +1611,10 @@
   },
   {
     "type": "force",
+    "named": false
+  },
+  {
+    "type": "from",
     "named": false
   },
   {

@@ -1737,12 +1737,35 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "equal"
-        },
-        {
-          "type": "STRING",
-          "value": "to"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "equal"
+                },
+                {
+                  "type": "STRING",
+                  "value": "to"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "away"
+                },
+                {
+                  "type": "STRING",
+                  "value": "from"
+                }
+              ]
+            }
+          ]
         },
         {
           "type": "FIELD",

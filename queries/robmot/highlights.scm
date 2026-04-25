@@ -31,6 +31,8 @@
 "keeping" @keyword.operator
 "equal" @keyword.operator
 "to" @keyword.operator
+"away" @keyword.operator
+"from" @keyword.operator
 "greater" @keyword.operator
 "than" @keyword.operator
 "less" @keyword.operator
