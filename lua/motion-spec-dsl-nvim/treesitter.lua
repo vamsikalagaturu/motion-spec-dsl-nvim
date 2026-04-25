@@ -4,19 +4,14 @@ local function plugin_root()
   return vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":h:h:h")
 end
 
-local function ensure_parser(root)
+local function compile_parser(root)
   local parser_dir = vim.fn.stdpath("data") .. "/site/parser"
   local so = parser_dir .. "/robmot.so"
   local src = root .. "/src/parser.c"
   if vim.fn.filereadable(src) == 0 then
+    vim.notify("motion-spec-dsl-nvim: parser.c not found at " .. src, vim.log.levels.WARN)
     return
   end
-  local so_mtime = vim.fn.getftime(so)
-  local src_mtime = vim.fn.getftime(src)
-  if so_mtime >= src_mtime then
-    return
-  end
-
   vim.fn.mkdir(parser_dir, "p")
   local out = vim.fn.system(string.format(
     "gcc -O2 -shared -fPIC -o %s %s -I %s",
@@ -27,6 +22,23 @@ local function ensure_parser(root)
   if vim.v.shell_error ~= 0 then
     vim.notify("motion-spec-dsl-nvim: parser compilation failed:\n" .. out, vim.log.levels.WARN)
   end
+end
+
+local function ensure_parser(root)
+  local parser_dir = vim.fn.stdpath("data") .. "/site/parser"
+  local so = parser_dir .. "/robmot.so"
+  local src = root .. "/src/parser.c"
+  if vim.fn.filereadable(src) == 0 then
+    return
+  end
+  if vim.fn.getftime(so) >= vim.fn.getftime(src) then
+    return
+  end
+  compile_parser(root)
+end
+
+function M.build()
+  compile_parser(plugin_root())
 end
 
 function M.setup()
