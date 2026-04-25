@@ -7,12 +7,13 @@ end
 local function ensure_parser(root)
   local parser_dir = vim.fn.stdpath("data") .. "/site/parser"
   local so = parser_dir .. "/robmot.so"
-  if vim.fn.filereadable(so) == 1 then
-    return
-  end
-
   local src = root .. "/src/parser.c"
   if vim.fn.filereadable(src) == 0 then
+    return
+  end
+  local so_mtime = vim.fn.getftime(so)
+  local src_mtime = vim.fn.getftime(src)
+  if so_mtime >= src_mtime then
     return
   end
 
