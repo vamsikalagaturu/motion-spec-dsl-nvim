@@ -65,7 +65,6 @@
 "root" @label
 "end" @label
 "constraint" @label
-"solver" @label
 "robot" @label
 "algorithm" @label
 "Kp" @label
