@@ -140,4 +140,4 @@
 
 ; Inline context_ref: [c2.var = 5.0 N] path, and Scope[name: Type = val] declaration.
 (context_ref variable: (fqn) @variable.member)
-(context_ref declaration: (value_variable name: (name) @constant))
+(context_ref declaration: (value_variable name: (name) @constant type: (name) @type))
