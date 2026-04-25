@@ -23,7 +23,7 @@ syntax keyword motionSpecType Posture
 syntax keyword motionSpecType PID Solver
 
 " Constraint / expression operators
-syntax keyword motionSpecOperator keeping equal to away from up greater than less between and
+syntax keyword motionSpecOperator keeping equal to away from up greater than less between and any all
 syntax keyword motionSpecOperator is larger smaller as for apply at via
 
 " Monitor operators

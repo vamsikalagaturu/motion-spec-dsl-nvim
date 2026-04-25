@@ -34,6 +34,7 @@
 "away" @keyword.operator
 "from" @keyword.operator
 "up" @keyword.operator
+(until_logic) @keyword.operator
 "greater" @keyword.operator
 "than" @keyword.operator
 "less" @keyword.operator

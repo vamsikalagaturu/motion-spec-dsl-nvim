@@ -127,8 +127,10 @@ WhileSection:
 ;
 
 UntilSection:
-    "UNTIL" "{" constraints*=ConstraintItem[","]? "}"
+    "UNTIL" (logic=UntilLogic)? "{" constraints*=ConstraintItem[","]? "}"
 ;
+
+UntilLogic: "any" | "all" ;
 
 // Constraint items: inline specification or <motion.constraint> cross-reference.
 ConstraintItem:

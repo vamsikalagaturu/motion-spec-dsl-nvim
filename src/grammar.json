@@ -1489,6 +1489,18 @@
               "value": "UNTIL"
             },
             {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "until_logic"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
               "type": "STRING",
               "value": "{"
             },
@@ -1542,6 +1554,19 @@
               "value": "}"
             }
           ]
+        }
+      ]
+    },
+    "until_logic": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "any"
+        },
+        {
+          "type": "STRING",
+          "value": "all"
         }
       ]
     },

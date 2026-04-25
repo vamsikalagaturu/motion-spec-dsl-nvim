@@ -139,8 +139,10 @@ module.exports = grammar({
       choice(
         seq("WHEN",  "{", optional(commaSep1($.constraint_item)), "}"),
         seq("WHILE", "{", optional(commaSep1($.constraint_item)), "}"),
-        seq("UNTIL", "{", optional(commaSep1($.constraint_item)), "}"),
+        seq("UNTIL", optional($.until_logic), "{", optional(commaSep1($.constraint_item)), "}"),
       ),
+
+    until_logic: (_) => choice("any", "all"),
 
     constraint_item: ($) => choice($.constraint_specification, $.ref),
 

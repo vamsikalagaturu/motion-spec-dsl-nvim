@@ -151,6 +151,10 @@
         {
           "type": "constraint_item",
           "named": true
+        },
+        {
+          "type": "until_logic",
+          "named": true
         }
       ]
     }
@@ -1201,6 +1205,11 @@
     "fields": {}
   },
   {
+    "type": "until_logic",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "value_variable",
     "named": true,
     "fields": {
@@ -1521,11 +1530,19 @@
     "named": false
   },
   {
+    "type": "all",
+    "named": false
+  },
+  {
     "type": "and",
     "named": false
   },
   {
     "type": "angvel",
+    "named": false
+  },
+  {
+    "type": "any",
     "named": false
   },
   {
