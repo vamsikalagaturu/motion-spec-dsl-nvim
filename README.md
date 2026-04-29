@@ -24,10 +24,10 @@ Python dependencies (`pygls`, `textX`) are installed automatically into a plugin
 ```lua
 {
   "vamsikalagaturu/motion-spec-dsl-nvim",
-  ft = "rob_mot",
+  ft = "robmot",
   dependencies = { "nvim-treesitter/nvim-treesitter" },
   init = function()
-    vim.filetype.add({ extension = { robmot = "rob_mot" } })
+    vim.filetype.add({ extension = { robmot = "robmot" } })
   end,
   config = function()
     require("motion-spec-dsl-nvim").setup()
@@ -35,9 +35,9 @@ Python dependencies (`pygls`, `textX`) are installed automatically into a plugin
 }
 ```
 
-Run `:TSInstall motion_spec` once to compile the tree-sitter parser.
+Run `:TSInstall robmot` once to compile the tree-sitter parser.
 
-The `init` hook is recommended when lazy-loading on `ft = "rob_mot"` so Neovim
+The `init` hook is recommended when lazy-loading on `ft = "robmot"` so Neovim
 knows the filetype before Lazy decides whether to load the plugin.
 
 ## Configuration
@@ -63,7 +63,7 @@ Highlighted constructs include:
 
 ## LSP Features
 
-The bundled Python LSP starts automatically for `rob_mot` buffers after setup.
+The bundled Python LSP starts automatically for `robmot` buffers after setup.
 It uses the same textX grammar as the DSL package.
 
 Diagnostics:
