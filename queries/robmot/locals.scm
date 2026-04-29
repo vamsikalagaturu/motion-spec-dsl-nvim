@@ -15,7 +15,12 @@
 (post_context_decl label: (name) @local.definition.field)
 
 (world_quantity name: (name) @local.definition.field)
-(value_variable name: (name) @local.definition.field)
+(context_quantity name: (name) @local.definition.field)
+(world_quantity_alias name: (name) @local.definition.field)
+(context_quantity_alias name: (name) @local.definition.field)
+(constraint_alias name: (name) @local.definition.field)
+(controller_alias name: (name) @local.definition.field)
+(solver_alias name: (name) @local.definition.field)
 
 (constraint_specification name: (name) @local.definition.field)
 (monitor_entry name: (name) @local.definition.field)

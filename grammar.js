@@ -93,26 +93,31 @@ module.exports = grammar({
     motion_context_decl: ($) =>
       choice($.world_context_decl, $.pre_context_decl, $.spec_context_decl, $.post_context_decl),
 
-    // Context declarations accept inline definitions and <...> cross-references.
+    // Context declarations accept inline definitions, aliases, and <...> cross-references.
     world_context_decl: ($) =>
       seq(field("label", $.name), ":", "World", "{",
-        optional(commaSep1(choice($.world_quantity, $.ref))),
+        optional(commaSep1($.world_quantity_item)),
       "}"),
 
     pre_context_decl: ($) =>
       seq(field("label", $.name), ":", "Pre", "{",
-        optional(commaSep1(choice($.value_variable, $.ref))),
+        optional(commaSep1($.context_quantity_item)),
       "}"),
 
     spec_context_decl: ($) =>
       seq(field("label", $.name), ":", "Spec", "{",
-        optional(commaSep1(choice($.value_variable, $.ref))),
+        optional(commaSep1($.context_quantity_item)),
       "}"),
 
     post_context_decl: ($) =>
       seq(field("label", $.name), ":", "Post", "{",
-        optional(commaSep1(choice($.value_variable, $.ref))),
+        optional(commaSep1($.context_quantity_item)),
       "}"),
+
+    world_quantity_item: ($) => choice($.world_quantity, $.world_quantity_alias, $.ref),
+
+    world_quantity_alias: ($) =>
+      seq(field("name", $.name), ":", field("reference", $.ref)),
 
     world_quantity: ($) =>
       seq(
@@ -127,12 +132,19 @@ module.exports = grammar({
 
     property_key: (_) => choice("of", "wrt", "ref-point", "as-seen-by"),
 
-    value_variable: ($) =>
+    context_quantity_item: ($) => choice($.context_quantity, $.context_quantity_alias, $.ref),
+
+    context_quantity_alias: ($) =>
+      seq(field("name", $.name), ":", field("reference", $.ref)),
+
+    context_quantity: ($) =>
       seq(
         field("name", $.name), ":",
         field("type", $.name),
-        optional(field("value", $.quantity_value))
+        optional(field("value", $.context_quantity_value))
       ),
+
+    context_quantity_value: ($) => choice($.quantity_value, $.snapshot_value),
 
     quantity_value: ($) => choice($.scalar_quantity, $.vector_quantity),
 
@@ -148,6 +160,8 @@ module.exports = grammar({
         "}"
       ),
 
+    snapshot_value: ($) => seq("=", "Snapshot", "of", field("source", $.view)),
+
     // Each section holds inline constraint specs or bare <...> cross-references.
     constraint_section: ($) =>
       choice(
@@ -158,7 +172,10 @@ module.exports = grammar({
 
     until_logic: (_) => choice("any", "all"),
 
-    constraint_item: ($) => choice($.constraint_specification, $.ref),
+    constraint_item: ($) => choice($.constraint_specification, $.constraint_alias, $.ref),
+
+    constraint_alias: ($) =>
+      seq(field("name", $.name), ":", field("reference", $.ref)),
 
     constraint_specification: ($) =>
       seq(
@@ -168,19 +185,27 @@ module.exports = grammar({
         field("expr", $.constraint_expression),
       ),
 
-    // View: <context.quantity>[.subspace[.axis]]
-    // JointPosition views omit the subspace entirely.
+    // View: <context.quantity>[.subspace[.axis]], or distance between two poses.
+    // JointPosition and whole Pose snapshot views omit the subspace.
     view: ($) =>
-      seq(
-        field("quantity", $.ref),
-        optional(seq(
-          ".", field("subspace", $.subspace),
-          optional(seq(".", field("axis", $.axis)))
-        ))
+      choice(
+        seq(
+          "distance", "between",
+          field("from", $.ref),
+          "and",
+          field("to", $.ref),
+        ),
+        seq(
+          field("quantity", $.ref),
+          optional(seq(
+            ".", field("subspace", $.subspace),
+            optional(seq(".", field("axis", $.axis)))
+          ))
+        )
       ),
 
     subspace: (_) => choice("angvel", "linvel", "torque", "force", "orientation", "position"),
-    axis: (_) => choice("x", "y", "z"),
+    axis: (_) => choice("x", "y", "z", "roll", "pitch", "yaw"),
 
     constraint_expression: ($) =>
       choice(
@@ -215,7 +240,7 @@ module.exports = grammar({
       choice(
         $.ref,
         seq("[", field("variable", $.fqn), optional(field("value", $.quantity_value)), "]"),
-        seq(field("scope", $.context_scope), "[", field("declaration", $.value_variable), "]"),
+        seq(field("scope", $.context_scope), "[", field("declaration", $.context_quantity), "]"),
       ),
 
     context_scope: (_) => choice("Pre", "Spec", "Post"),
@@ -249,7 +274,10 @@ module.exports = grammar({
       seq("set", "flag", field("flag", $.name), "while", "active"),
 
     // A controller item is either an inline PID definition or a <handler.ctrl> reference.
-    controller_item: ($) => choice($.controller_entry, $.ref),
+    controller_item: ($) => choice($.controller_entry, $.controller_alias, $.ref),
+
+    controller_alias: ($) =>
+      seq(field("name", $.name), ":", field("reference", $.ref)),
 
     controller_entry: ($) =>
       seq(
@@ -273,7 +301,10 @@ module.exports = grammar({
       ),
 
     // A solver item is either an inline Solver definition or a <handler.solver> reference.
-    solver_item: ($) => choice($.solver_entry, $.ref),
+    solver_item: ($) => choice($.solver_entry, $.solver_alias, $.ref),
+
+    solver_alias: ($) =>
+      seq(field("name", $.name), ":", field("reference", $.ref)),
 
     solver_entry: ($) =>
       seq(

@@ -63,20 +63,24 @@ WorldContextDecl:
 ;
 
 PreContextDecl:
-    name=Name ":" "Pre" "{" declaration*=ValueVariableItem[","] "}"
+    name=Name ":" "Pre" "{" declaration*=ContextQuantityItem[","] "}"
 ;
 
 SpecContextDecl:
-    name=Name ":" "Spec" "{" declaration*=ValueVariableItem[","] "}"
+    name=Name ":" "Spec" "{" declaration*=ContextQuantityItem[","] "}"
 ;
 
 PostContextDecl:
-    name=Name ":" "Post" "{" declaration*=ValueVariableItem[","] "}"
+    name=Name ":" "Post" "{" declaration*=ContextQuantityItem[","] "}"
 ;
 
-// World context items: inline definition or <fqn> reference.
+// World context items: inline definition, alias, or <fqn> reference.
 WorldQuantityItem:
-    WorldQuantity | Ref
+    WorldQuantity | WorldQuantityAlias | Ref
+;
+
+WorldQuantityAlias:
+    name=Name ":" ref=Ref
 ;
 
 WorldQuantity:
@@ -95,13 +99,21 @@ GeoPropKey:
     "of" | "wrt" | "ref-point" | "as-seen-by"
 ;
 
-// Value context items: inline definition or <fqn> reference.
-ValueVariableItem:
-    ValueVariable | Ref
+// Context quantity items: inline definition, alias, or <fqn> reference.
+ContextQuantityItem:
+    ContextQuantity | ContextQuantityAlias | Ref
 ;
 
-ValueVariable:
-    name=Name ":" type=Name value=QuantityValue?
+ContextQuantityAlias:
+    name=Name ":" ref=Ref
+;
+
+ContextQuantity:
+    name=Name ":" type=Name value=ContextQuantityValue?
+;
+
+ContextQuantityValue:
+    QuantityValue | SnapshotValue
 ;
 
 QuantityValue:
@@ -114,6 +126,10 @@ ScalarQuantity:
 
 VectorQuantity:
     "{" "x" "=" x=FLOAT "," "y" "=" y=FLOAT "," "z" "=" z=FLOAT unit=Unit "}"
+;
+
+SnapshotValue:
+    "=" "Snapshot" "of" source=View
 ;
 
 ConstraintSection:
@@ -134,9 +150,13 @@ UntilSection:
 
 UntilLogic: "any" | "all" ;
 
-// Constraint items: inline specification or <motion.constraint> cross-reference.
+// Constraint items: inline specification, alias, or <motion.constraint> cross-reference.
 ConstraintItem:
-    ConstraintSpecification | Ref
+    ConstraintSpecification | ConstraintAlias | Ref
+;
+
+ConstraintAlias:
+    name=Name ":" ref=Ref
 ;
 
 ConstraintSpecification:
@@ -144,7 +164,13 @@ ConstraintSpecification:
 ;
 
 View:
-    "<" fqn=FQN ">" ("." subspace=SubSpace ("." axis=Axis)?)?
+    (
+        "distance" "between" from=Ref "and" to=Ref
+    )
+    |
+    (
+        "<" fqn=FQN ">" ("." subspace=SubSpace ("." axis=Axis)?)?
+    )
 ;
 
 SubSpace:
@@ -152,7 +178,7 @@ SubSpace:
 ;
 
 Axis:
-    "x" | "y" | "z"
+    "x" | "y" | "z" | "roll" | "pitch" | "yaw"
 ;
 
 ConstraintExpression:
@@ -178,7 +204,7 @@ BilateralConstraint:
 ContextRef:
     "<" fqn=FQN ">"
   | "[" variable=FQN quantityValue=QuantityValue? "]"
-  | scope=ContextScope "[" declaration=ValueVariable "]"
+  | scope=ContextScope "[" declaration=ContextQuantity "]"
 ;
 
 ContextScope:
@@ -207,9 +233,13 @@ MonitorEntry:
     )
 ;
 
-// Controller items: inline PID entry or <handler.ctrl> cross-reference.
+// Controller items: inline PID entry, alias, or <handler.ctrl> cross-reference.
 ControllerItem:
-    ControllerEntry | Ref
+    ControllerEntry | ControllerAlias | Ref
+;
+
+ControllerAlias:
+    name=Name ":" ref=Ref
 ;
 
 ControllerEntry:
@@ -230,9 +260,13 @@ ControllerParams:
     ("," "decay" ":" decay=FLOAT)?
 ;
 
-// Solver items: inline Solver definition or <handler.solver> cross-reference.
+// Solver items: inline Solver definition, alias, or <handler.solver> cross-reference.
 SolverItem:
-    SolverEntry | Ref
+    SolverEntry | SolverAlias | Ref
+;
+
+SolverAlias:
+    name=Name ":" ref=Ref
 ;
 
 SolverEntry:

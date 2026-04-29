@@ -31,6 +31,32 @@
     }
   },
   {
+    "type": "constraint_alias",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "reference": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ref",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "constraint_expression",
     "named": true,
     "fields": {},
@@ -130,6 +156,10 @@
       "required": true,
       "types": [
         {
+          "type": "constraint_alias",
+          "named": true
+        },
+        {
           "type": "constraint_specification",
           "named": true
         },
@@ -196,6 +226,110 @@
     }
   },
   {
+    "type": "context_quantity",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "context_quantity_value",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "context_quantity_alias",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "reference": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ref",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "context_quantity_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "context_quantity",
+          "named": true
+        },
+        {
+          "type": "context_quantity_alias",
+          "named": true
+        },
+        {
+          "type": "ref",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "context_quantity_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "quantity_value",
+          "named": true
+        },
+        {
+          "type": "snapshot_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "context_ref",
     "named": true,
     "fields": {
@@ -204,7 +338,7 @@
         "required": false,
         "types": [
           {
-            "type": "value_variable",
+            "type": "context_quantity",
             "named": true
           }
         ]
@@ -255,6 +389,32 @@
     "type": "context_scope",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "controller_alias",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "reference": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ref",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "controller_entry",
@@ -340,6 +500,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "controller_alias",
+          "named": true
+        },
         {
           "type": "controller_entry",
           "named": true
@@ -762,11 +926,7 @@
       "required": false,
       "types": [
         {
-          "type": "ref",
-          "named": true
-        },
-        {
-          "type": "value_variable",
+          "type": "context_quantity_item",
           "named": true
         }
       ]
@@ -792,11 +952,7 @@
       "required": false,
       "types": [
         {
-          "type": "ref",
-          "named": true
-        },
-        {
-          "type": "value_variable",
+          "type": "context_quantity_item",
           "named": true
         }
       ]
@@ -1058,6 +1214,48 @@
     }
   },
   {
+    "type": "snapshot_value",
+    "named": true,
+    "fields": {
+      "source": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "view",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "solver_alias",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "reference": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ref",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "solver_entry",
     "named": true,
     "fields": {
@@ -1146,6 +1344,10 @@
           "named": true
         },
         {
+          "type": "solver_alias",
+          "named": true
+        },
+        {
           "type": "solver_entry",
           "named": true
         }
@@ -1196,11 +1398,7 @@
       "required": false,
       "types": [
         {
-          "type": "ref",
-          "named": true
-        },
-        {
-          "type": "value_variable",
+          "type": "context_quantity_item",
           "named": true
         }
       ]
@@ -1243,42 +1441,6 @@
     "type": "until_logic",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "value_variable",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      },
-      "type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "name",
-            "named": true
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "quantity_value",
-            "named": true
-          }
-        ]
-      }
-    }
   },
   {
     "type": "vector_quantity",
@@ -1340,9 +1502,19 @@
           }
         ]
       },
+      "from": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "ref",
+            "named": true
+          }
+        ]
+      },
       "quantity": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "ref",
@@ -1356,6 +1528,16 @@
         "types": [
           {
             "type": "subspace",
+            "named": true
+          }
+        ]
+      },
+      "to": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "ref",
             "named": true
           }
         ]
@@ -1382,11 +1564,7 @@
       "required": false,
       "types": [
         {
-          "type": "ref",
-          "named": true
-        },
-        {
-          "type": "world_quantity",
+          "type": "world_quantity_item",
           "named": true
         }
       ]
@@ -1426,6 +1604,55 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "world_quantity_alias",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "reference": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ref",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "world_quantity_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ref",
+          "named": true
+        },
+        {
+          "type": "world_quantity",
+          "named": true
+        },
+        {
+          "type": "world_quantity_alias",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1530,6 +1757,10 @@
   },
   {
     "type": "SOLVERS",
+    "named": false
+  },
+  {
+    "type": "Snapshot",
     "named": false
   },
   {
@@ -1650,6 +1881,10 @@
     "named": false
   },
   {
+    "type": "distance",
+    "named": false
+  },
+  {
     "type": "end",
     "named": false
   },
@@ -1754,6 +1989,10 @@
     "named": false
   },
   {
+    "type": "pitch",
+    "named": false
+  },
+  {
     "type": "position",
     "named": false
   },
@@ -1771,6 +2010,10 @@
   },
   {
     "type": "robot",
+    "named": false
+  },
+  {
+    "type": "roll",
     "named": false
   },
   {
@@ -1839,6 +2082,10 @@
   },
   {
     "type": "y",
+    "named": false
+  },
+  {
+    "type": "yaw",
     "named": false
   },
   {

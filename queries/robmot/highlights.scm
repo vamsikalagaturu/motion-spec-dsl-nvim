@@ -31,8 +31,11 @@
 "keeping" @keyword.operator
 "equal" @keyword.operator
 "to" @keyword.operator
+"distance" @keyword.operator
 "away" @keyword.operator
 "from" @keyword.operator
+"Snapshot" @keyword.operator
+"of" @keyword.operator
 "up" @keyword.operator
 (until_logic) @keyword.operator
 "greater" @keyword.operator
@@ -131,7 +134,12 @@
 ; All defined names use @constant (yellow in TokyoNight) regardless of where
 ; they appear — context vars, constraints, monitors, controllers, solvers.
 (world_quantity name: (name) @constant type: (name) @type)
-(value_variable name: (name) @constant type: (name) @type)
+(context_quantity name: (name) @constant type: (name) @type)
+(world_quantity_alias name: (name) @constant)
+(context_quantity_alias name: (name) @constant)
+(constraint_alias name: (name) @constant)
+(controller_alias name: (name) @constant)
+(solver_alias name: (name) @constant)
 (geo_prop_pair value: (name) @constant)
 
 (constraint_specification name: (name) @constant)
@@ -146,4 +154,4 @@
 
 ; Inline context_ref: [c2.var = 5.0 N] path, and Scope[name: Type = val] declaration.
 (context_ref variable: (fqn) @variable.member)
-(context_ref declaration: (value_variable name: (name) @constant type: (name) @type))
+(context_ref declaration: (context_quantity name: (name) @constant type: (name) @type))

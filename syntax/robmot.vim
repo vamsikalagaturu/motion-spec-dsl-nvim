@@ -24,7 +24,7 @@ syntax keyword motionSpecType PID Solver
 
 " Constraint / expression operators
 syntax keyword motionSpecOperator keeping equal to away from up greater than less between and any all
-syntax keyword motionSpecOperator is larger smaller as for apply at via
+syntax keyword motionSpecOperator is larger smaller as for apply at via distance Snapshot of
 
 " Monitor operators
 syntax keyword motionSpecOperator monitor trigger event set flag when while active
@@ -39,7 +39,7 @@ syntax keyword motionSpecAttribute of wrt ref-point as-seen-by
 
 " Subspace and axis literals inside a view
 syntax match motionSpecSubspace /\.\zs\(angvel\|linvel\|torque\|force\|orientation\|position\)\ze[.> ,\t]/
-syntax match motionSpecAxis /\.\zs[xyz]\ze[> ,\t\n]/
+syntax match motionSpecAxis /\.\zs\(x\|y\|z\|roll\|pitch\|yaw\)\ze[> ,\t\n]/
 
 " <...> references: the whole <path> is a reference, angle brackets included.
 syntax region motionSpecRef start=/</ end=/>/ oneline
